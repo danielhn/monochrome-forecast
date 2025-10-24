@@ -1,4 +1,23 @@
 window.addEventListener("load", () => {
+    getLocationFromLocalStorage()
+    renderWeatherCards()
+});
+
+function getLocationFromLocalStorage() {
+    if (localStorage.getItem('location')) {
+        const location = JSON.parse(localStorage.getItem('location'))
+        console.log(location);
+        renderLocationStored(location)
+    } else {
+        console.log('No location found stored');
+    }
+}
+
+function renderLocationStored(location) {
+    document.getElementById("location-name").innerText = location.name
+}
+
+function renderWeatherCards() {
     for (let index = 1; index <= 7; index++) {
         const card = `<div class="card">
                     <div class="card-body">
@@ -24,7 +43,7 @@ window.addEventListener("load", () => {
                 </div>`;
         document.getElementById("card-group").innerHTML += card;
     }
-});
+}
 
 async function getSuggestionsFromLocationName(locationName) {
     const url = `https://geocoding-api.open-meteo.com/v1/search?name=${locationName}&count=10&language=en&format=json`;
@@ -60,9 +79,17 @@ newLocationInput.addEventListener('keyup', async (key) => {
 const searchSuggestionsContainer = document.getElementById("search-suggestions");
 searchSuggestionsContainer.addEventListener('click', (e) => {
     if (e.target.classList.contains('list-group-item')) {
-        console.log(e.target.innerHTML);
-        console.log(e.target.dataset.longitude);
-        console.log(e.target.dataset.latitude);
-        document.getElementById("location-name").innerText = e.target.innerHTML;
+        // console.log(e.target.innerHTML);
+        // console.log(e.target.dataset.longitude);
+        // console.log(e.target.dataset.latitude);
+        document.getElementById("location-name").innerText = e.target.innerText;
+        const latitude = e.target.dataset.latitude;
+        const longitude = e.target.dataset.longitude
+        const name = e.target.innerText;
+        storeLocationInLocalStorage(latitude, longitude, name)
     }
 });
+
+function storeLocationInLocalStorage(latitude, longitude, name) {
+    localStorage.setItem('location', JSON.stringify({'name': name, 'latitude': latitude, 'longitude': longitude}))
+}
