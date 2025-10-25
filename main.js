@@ -23,7 +23,7 @@ function renderLocationStored(location) {
 }
 
 function renderHourlyWeather(weather) {
-    document.getElementById('current-hour-weather-code').innerText = weather.weather_code
+    document.getElementById('current-hour-weather-code').innerHTML = `<i class='${weatherCodes[weather.weather_code].icon}'></i> ` + weatherCodes[weather.weather_code].description
     document.getElementById('current-hour-temperature').innerText = `${weather.temperature_2m}º C - Feels like ${weather.apparent_temperature}º C`;
     document.getElementById('current-hour-uv-index').innerText = `UV Index: ${weather.uv_index}`;
     document.getElementById('current-hour-humidity').innerText = `${weather.relative_humidity_2m}% humidity`;
