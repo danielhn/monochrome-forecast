@@ -86,7 +86,15 @@ newLocationInput.addEventListener('keyup', async (key) => {
 
         let listOfSuggestions = '';
         suggestions.results.forEach((suggestion) => {
-            listOfSuggestions += `<button type='button' data-bs-dismiss="modal" data-latitude='${suggestion.latitude}' data-longitude='${suggestion.longitude}'  class='list-group-item list-group-item-action'>${suggestion.name} - ${suggestion.admin1}, ${suggestion.country}</button>`;
+            let fullLocationName;
+            // Some suggestions don't have an admin1
+            if (suggestion.admin1) {
+                fullLocationName = `${suggestion.name} - ${suggestion.admin1}, ${suggestion.country}`;
+            } else {
+                fullLocationName = `${suggestion.name}, ${suggestion.country}`;
+            }
+
+            listOfSuggestions += `<button type='button' data-bs-dismiss="modal" data-latitude='${suggestion.latitude}' data-longitude='${suggestion.longitude}'  class='list-group-item list-group-item-action'>${fullLocationName}</button>`;
         });
 
         document.getElementById("search-suggestions").innerHTML = listOfSuggestions;
