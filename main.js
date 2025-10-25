@@ -1,20 +1,41 @@
-window.addEventListener("load", () => {
-    getLocationFromLocalStorage()
-    renderWeatherCards()
+window.addEventListener("load", async () => {
+    const location = getLocationFromLocalStorage()
+    
+    if (location) {
+        renderWeatherCards()
+        renderLocationStored(location)
+        const currentHourWeather = await getWeatherForCurrentHour(location.latitude, location.longitude)
+        renderHourlyWeather(currentHourWeather.current)
+    }
+    
 });
 
 function getLocationFromLocalStorage() {
     if (localStorage.getItem('location')) {
-        const location = JSON.parse(localStorage.getItem('location'))
-        console.log(location);
-        renderLocationStored(location)
+        return JSON.parse(localStorage.getItem('location'))
     } else {
         console.log('No location found stored');
-    }
+    } 
 }
 
 function renderLocationStored(location) {
     document.getElementById("location-name").innerText = location.name
+}
+
+function renderHourlyWeather(weather) {
+    document.getElementById('current-hour-weather-code').innerText = weather.weather_code
+    document.getElementById('current-hour-temperature').innerText = `${weather.temperature_2m}º C - Feels like ${weather.apparent_temperature}º C`;
+    document.getElementById('current-hour-uv-index').innerText = `UV Index: ${weather.uv_index}`;
+    document.getElementById('current-hour-humidity').innerText = `${weather.relative_humidity_2m}% humidity`;
+    document.getElementById('current-hour-wind-speed').innerText = `${weather.wind_speed_10m} Km/h`;
+    document.getElementById('current-hour-precipitation-probability').innerText = `${weather.precipitation_probability} %`;
+}
+
+async function getWeatherForCurrentHour(latitude, longitude) {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,weather_code,wind_speed_10m`;
+
+    const request = await fetch(url);
+    return await request.json();
 }
 
 function renderWeatherCards() {
@@ -82,10 +103,10 @@ searchSuggestionsContainer.addEventListener('click', (e) => {
         // console.log(e.target.innerHTML);
         // console.log(e.target.dataset.longitude);
         // console.log(e.target.dataset.latitude);
-        document.getElementById("location-name").innerText = e.target.innerText;
         const latitude = e.target.dataset.latitude;
         const longitude = e.target.dataset.longitude
         const name = e.target.innerText;
+        document.getElementById("location-name").innerText = name;
         storeLocationInLocalStorage(latitude, longitude, name)
     }
 });

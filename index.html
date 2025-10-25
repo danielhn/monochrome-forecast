@@ -47,21 +47,21 @@
                     <div class="container-fluid">
                         <div class="row mt-5 align-items-center">
                             <div class="col">
-                                <p class="display-5 fw-semibold"><i class="display-1 bi bi-sun"></i> Clear sky</p>
-                                <p class="fs-1"><i class="bi bi-thermometer"></i> 25º C - Feels like 24º C</p>
+                                <p id="current-hour-weather-code" class="display-5 fw-semibold"></p>
+                                <p id="current-hour-temperature" class="fs-1"></p>
                             </div>
                             <ul class="col list-group list-group-flush">
                                 <li class="fs-2 list-group-item">
-                                    <i class="bi bi-sun"></i> UV Index: 6
+                                    <i class="bi bi-sun"></i> <span id="current-hour-uv-index"></span>
                                 </li>
                                 <li class="fs-2 list-group-item">
-                                    <i class="bi bi-moisture"></i> 25 % humidity
+                                    <i class="bi bi-moisture"></i> <span id="current-hour-humidity"></span>
                                 </li>
                                 <li class="fs-2 list-group-item">
-                                    <i class="bi bi-wind"></i> 12 Km/h
+                                    <i class="bi bi-wind"></i> <span id="current-hour-wind-speed"></span>
                                 </li>
                                 <li class="fs-2 list-group-item">
-                                    <i class="bi bi-umbrella"></i> Chance of rain: 43%
+                                    <i class="bi bi-umbrella"></i> <span id="current-hour-precipitation-probability"></span>
                                 </li>
                             </ul>
                         </div>
