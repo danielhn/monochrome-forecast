@@ -64,7 +64,7 @@ function renderWeatherCards(dailyForecast, hour, days) {
     const hoursRenderedPerDay = 24;
     for (let index = 0; index < hoursRenderedPerDay; index++) {
         const date = new Date(dailyForecast.time[hour]).toLocaleTimeString()
-        const card = `<div style="min-width: 15rem;" class="card">
+        const card = `<div class="card">
                     <div class="card-body">
                         <h2 class="card-title fs-3 text-center">${date}</h2>
                         <ul class="list-group list-group-flush">
