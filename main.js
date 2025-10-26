@@ -2,10 +2,11 @@ window.addEventListener("load", async () => {
     const location = getLocationFromLocalStorage()
     
     if (location) {
-        renderWeatherCards()
         renderLocationStored(location)
         const currentHourWeather = await getWeatherForCurrentHour(location.latitude, location.longitude)
         renderHourlyWeather(currentHourWeather.current)
+        const dailyForecast = await getDailyForecast(location.latitude, location.longitude);
+        renderDailyForecast(dailyForecast.hourly)
     }
     
 });
@@ -38,31 +39,55 @@ async function getWeatherForCurrentHour(latitude, longitude) {
     return await request.json();
 }
 
-function renderWeatherCards() {
-    for (let index = 1; index <= 7; index++) {
-        const card = `<div class="card">
+async function getDailyForecast(latitude, longitude) {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,wind_speed_10m`;
+
+    const request = await fetch(url);
+    return await request.json();
+}
+
+async function renderDailyForecast(dailyForecast) {
+    let days = 1;
+    for (let index = 0; index < dailyForecast.time.length; index++) {
+        let date = new Date(dailyForecast.time[index])
+        if (date.getHours() == 0) {
+            const day = `<h2 id="first-day" class="my-4">${date.toLocaleDateString()}</h2>`;
+            document.getElementById("daily-forecast-container").innerHTML += day
+            document.getElementById("daily-forecast-container").innerHTML += `<div class="my-2 d-flex flex-row flex-nowrap overflow-auto" id="card-container-${days}"></div>`
+            renderWeatherCards(dailyForecast, index, days)
+            days++
+        }
+    }
+}
+
+function renderWeatherCards(dailyForecast, hour, days) {
+    const hoursRenderedPerDay = 24;
+    for (let index = 0; index < hoursRenderedPerDay; index++) {
+        const date = new Date(dailyForecast.time[hour]).toLocaleTimeString()
+        const card = `<div style="min-width: 15rem;" class="card">
                     <div class="card-body">
-                        <h2 class="card-title fs-3 text-center">Day ${index}</h2>
+                        <h2 class="card-title fs-3 text-center">${date}</h2>
                         <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
-                                    <i class="bi bi-thermometer"></i> 25º C - Feels like 24º C
+                                    <i class="bi bi-thermometer"></i> ${dailyForecast.temperature_2m[hour]}º C - Feels like ${dailyForecast.apparent_temperature[hour]}º C
                                 </li>
                                 <li class="list-group-item">
-                                    <i class="bi bi-sun"></i> UV Index: 6
+                                    <i class="bi bi-sun"></i> UV Index: ${dailyForecast.uv_index[hour]}
                                 </li>
                                 <li class="list-group-item">
-                                    <i class="bi bi-moisture"></i> 25 % humidity
+                                    <i class="bi bi-moisture"></i> ${dailyForecast.relative_humidity_2m[hour]}% humidity
                                 </li>
                                 <li class="list-group-item">
-                                    <i class="bi bi-wind"></i> 12 Km/h
+                                    <i class="bi bi-wind"></i> ${dailyForecast.wind_speed_10m[hour]} Km/h
                                 </li>
                                 <li class="list-group-item">
-                                    <i class="bi bi-umbrella"></i> Chance of rain: 43%
+                                    <i class="bi bi-umbrella"></i> Chance of rain: ${dailyForecast.precipitation_probability[hour]}%
                                 </li>
                         </ul>
                     </div>
                 </div>`;
-        document.getElementById("card-group").innerHTML += card;
+        document.getElementById(`card-container-${days}`).innerHTML += card;
+        hour++;
     }
 }
 
