@@ -141,6 +141,9 @@ searchSuggestionsContainer.addEventListener('click', (e) => {
         const name = e.target.innerText;
         document.getElementById("location-name").innerText = name;
         storeLocationInLocalStorage(latitude, longitude, name)
+
+        newLocationInput.value = ''
+        searchSuggestionsContainer.innerHTML = '';
     }
 });
 
