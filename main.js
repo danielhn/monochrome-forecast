@@ -109,9 +109,6 @@ newLocationInput.addEventListener('keyup', async (key) => {
 
     // Avoid making requests to the geocoding API with zero or one character
     if (locationName.length >= 2) {
-
-        document.getElementById("search-suggestions").innerHTML = '';
-
         const suggestions = await getSuggestionsFromLocationName(locationName);
 
         let listOfSuggestions = '';
