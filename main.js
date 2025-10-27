@@ -1,15 +1,18 @@
-window.addEventListener("load", async () => {
-    const location = getLocationFromLocalStorage()
-    
-    if (location) {
-        renderLocationStored(location)
-        const currentHourWeather = await getWeatherForCurrentHour(location.latitude, location.longitude)
-        renderHourlyWeather(currentHourWeather.current)
-        const dailyForecast = await getDailyForecast(location.latitude, location.longitude);
-        renderDailyForecast(dailyForecast.hourly)
-    }
-    
+window.addEventListener("load", () => {
+    renderLocationStored()
 });
+
+async function renderLocationStored() {
+    const location = getLocationFromLocalStorage();
+
+    if (location) {
+        renderLocationData(location);
+        const currentHourWeather = await getWeatherForCurrentHour(location.latitude, location.longitude);
+        renderHourlyWeather(currentHourWeather.current);
+        const dailyForecast = await getDailyForecast(location.latitude, location.longitude);
+        renderDailyForecast(dailyForecast.hourly);
+    }
+}
 
 function getLocationFromLocalStorage() {
     if (localStorage.getItem('location')) {
@@ -19,7 +22,7 @@ function getLocationFromLocalStorage() {
     } 
 }
 
-function renderLocationStored(location) {
+function renderLocationData(location) {
     document.getElementById("location-name").innerText = location.name
 }
 
@@ -47,13 +50,15 @@ async function getDailyForecast(latitude, longitude) {
 }
 
 async function renderDailyForecast(dailyForecast) {
+    const dailyForecastContainer = document.getElementById("daily-forecast-container");
+    dailyForecastContainer.innerHTML = '';
     let days = 1;
     for (let index = 0; index < dailyForecast.time.length; index++) {
         let date = new Date(dailyForecast.time[index])
         if (date.getHours() == 0) {
             const day = `<h2 id="first-day" class="my-4">${date.toLocaleDateString()}</h2>`;
-            document.getElementById("daily-forecast-container").innerHTML += day
-            document.getElementById("daily-forecast-container").innerHTML += `<div class="my-2 d-flex flex-row flex-nowrap overflow-auto" id="card-container-${days}"></div>`
+            dailyForecastContainer.innerHTML += day
+            dailyForecastContainer.innerHTML += `<div class="my-2 d-flex flex-row flex-nowrap overflow-auto" id="card-container-${days}"></div>`
             renderWeatherCards(dailyForecast, index, days)
             days++
         }
@@ -133,17 +138,14 @@ newLocationInput.addEventListener('keyup', async (key) => {
 const searchSuggestionsContainer = document.getElementById("search-suggestions");
 searchSuggestionsContainer.addEventListener('click', (e) => {
     if (e.target.classList.contains('list-group-item')) {
-        // console.log(e.target.innerHTML);
-        // console.log(e.target.dataset.longitude);
-        // console.log(e.target.dataset.latitude);
         const latitude = e.target.dataset.latitude;
         const longitude = e.target.dataset.longitude
         const name = e.target.innerText;
-        document.getElementById("location-name").innerText = name;
-        storeLocationInLocalStorage(latitude, longitude, name)
 
-        newLocationInput.value = ''
+        storeLocationInLocalStorage(latitude, longitude, name)
+        newLocationInput.value = '';
         searchSuggestionsContainer.innerHTML = '';
+        renderLocationStored()
     }
 });
 
