@@ -37,14 +37,14 @@ function renderHourlyWeather(weather) {
 }
 
 async function getWeatherForCurrentHour(latitude, longitude) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m&timezone=auto`;
 
     const request = await fetch(url);
     return await request.json();
 }
 
 async function getDailyForecast(latitude, longitude) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m&past_hours=0`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m&past_hours=0&timezone=auto`;
 
     const request = await fetch(url);
     return await request.json();
