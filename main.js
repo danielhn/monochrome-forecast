@@ -33,17 +33,18 @@ function renderHourlyWeather(weather) {
     document.getElementById('current-hour-humidity').innerText = `${weather.relative_humidity_2m}% humidity`;
     document.getElementById('current-hour-wind-speed').innerText = `${weather.wind_speed_10m} Km/h`;
     document.getElementById('current-hour-precipitation-probability').innerText = `${weather.precipitation_probability} %`;
+    document.getElementById('current-hour-precipitation').innerText = `${weather.precipitation} mm`;
 }
 
 async function getWeatherForCurrentHour(latitude, longitude) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,weather_code,wind_speed_10m`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m`;
 
     const request = await fetch(url);
     return await request.json();
 }
 
 async function getDailyForecast(latitude, longitude) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,wind_speed_10m`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m`;
 
     const request = await fetch(url);
     return await request.json();
@@ -87,6 +88,9 @@ function renderWeatherCards(dailyForecast, hour, days) {
                                 </li>
                                 <li class="list-group-item">
                                     <i class="bi bi-umbrella"></i> Chance of rain: ${dailyForecast.precipitation_probability[hour]}%
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="bi bi-droplet"></i> Precipitation: ${dailyForecast.precipitation[hour]} mm
                                 </li>
                         </ul>
                     </div>
