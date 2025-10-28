@@ -27,6 +27,8 @@ function renderLocationData(location) {
 }
 
 function renderHourlyWeather(weather) {
+    const currentHour = new Date(weather.time).toLocaleTimeString()
+    document.getElementById('current-hour-data-time').innerHTML = currentHour
     document.getElementById('current-hour-weather-code').innerHTML = `<i class='${weatherCodes[weather.weather_code].icon}'></i> ` + weatherCodes[weather.weather_code].description
     document.getElementById('current-hour-temperature').innerText = `${weather.temperature_2m}º C - Feels like ${weather.apparent_temperature}º C`;
     document.getElementById('current-hour-uv-index').innerText = `UV Index: ${weather.uv_index}`;
