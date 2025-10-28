@@ -44,7 +44,7 @@ async function getWeatherForCurrentHour(latitude, longitude) {
 }
 
 async function getDailyForecast(latitude, longitude) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m&past_hours=0`;
 
     const request = await fetch(url);
     return await request.json();
@@ -53,51 +53,47 @@ async function getDailyForecast(latitude, longitude) {
 async function renderDailyForecast(dailyForecast) {
     const dailyForecastContainer = document.getElementById("daily-forecast-container");
     dailyForecastContainer.innerHTML = '';
-    let days = 1;
+    let days = 0;
     for (let index = 0; index < dailyForecast.time.length; index++) {
         let date = new Date(dailyForecast.time[index])
-        if (date.getHours() == 0) {
+        if (date.getHours() == 0 || index == 0) {
+            days++
             const day = `<h2 id="first-day" class="my-4">${date.toLocaleDateString()}</h2>`;
             dailyForecastContainer.innerHTML += day
             dailyForecastContainer.innerHTML += `<div class="my-2 d-flex flex-row flex-nowrap overflow-auto" id="card-container-${days}"></div>`
-            renderWeatherCards(dailyForecast, index, days)
-            days++
         }
+        renderWeatherCard(dailyForecast, index, days)
     }
 }
 
-function renderWeatherCards(dailyForecast, hour, days) {
-    const hoursRenderedPerDay = 24;
-    for (let index = 0; index < hoursRenderedPerDay; index++) {
-        const date = new Date(dailyForecast.time[hour]).toLocaleTimeString()
-        const card = `<div class="card me-3 mb-4">
-                    <div class="card-body">
-                        <h2 class="card-title fs-3 text-center">${date}</h2>
-                        <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <i class="bi bi-thermometer"></i> ${dailyForecast.temperature_2m[hour]}º C - Feels like ${dailyForecast.apparent_temperature[hour]}º C
-                                </li>
-                                <li class="list-group-item">
-                                    <i class="bi bi-sun"></i> UV Index: ${dailyForecast.uv_index[hour]}
-                                </li>
-                                <li class="list-group-item">
-                                    <i class="bi bi-moisture"></i> ${dailyForecast.relative_humidity_2m[hour]}% humidity
-                                </li>
-                                <li class="list-group-item">
-                                    <i class="bi bi-wind"></i> ${dailyForecast.wind_speed_10m[hour]} Km/h
-                                </li>
-                                <li class="list-group-item">
-                                    <i class="bi bi-umbrella"></i> Chance of rain: ${dailyForecast.precipitation_probability[hour]}%
-                                </li>
-                                <li class="list-group-item">
-                                    <i class="bi bi-droplet"></i> Precipitation: ${dailyForecast.precipitation[hour]} mm
-                                </li>
-                        </ul>
-                    </div>
-                </div>`;
-        document.getElementById(`card-container-${days}`).innerHTML += card;
-        hour++;
-    }
+function renderWeatherCard(dailyForecast, hour, days) {
+    const date = new Date(dailyForecast.time[hour]).toLocaleTimeString()
+    const card = `<div class="card me-3 mb-4">
+                <div class="card-body">
+                    <h2 class="card-title fs-3 text-center">${date}</h2>
+                    <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <i class="bi bi-thermometer"></i> ${dailyForecast.temperature_2m[hour]}º C - Feels like ${dailyForecast.apparent_temperature[hour]}º C
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-sun"></i> UV Index: ${dailyForecast.uv_index[hour]}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-moisture"></i> ${dailyForecast.relative_humidity_2m[hour]}% humidity
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-wind"></i> ${dailyForecast.wind_speed_10m[hour]} Km/h
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-umbrella"></i> Chance of rain: ${dailyForecast.precipitation_probability[hour]}%
+                            </li>
+                            <li class="list-group-item">
+                                <i class="bi bi-droplet"></i> Precipitation: ${dailyForecast.precipitation[hour]} mm
+                            </li>
+                    </ul>
+                </div>
+            </div>`;
+    document.getElementById(`card-container-${days}`).innerHTML += card;
 }
 
 async function getSuggestionsFromLocationName(locationName) {
