@@ -6,6 +6,9 @@ async function renderLocationStored() {
     const location = getLocationFromLocalStorage();
 
     if (location) {
+        document.getElementById("current-hour-container").classList.remove('d-none')
+        document.getElementById("no-location-found-title").classList.add('d-none')
+
         renderLocationData(location);
         const currentHourWeather = await getWeatherForCurrentHour(location.latitude, location.longitude);
         renderHourlyWeather(currentHourWeather.current);
