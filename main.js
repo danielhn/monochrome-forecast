@@ -10,7 +10,9 @@ async function renderLocationStored() {
         document.getElementById("no-location-found-title").classList.add('d-none')
 
         renderLocationData(location);
-        const currentHourWeather = await getWeatherForCurrentHour(location.latitude, location.longitude);
+        // At the moment only a single location is supported, so 'location' is hardcoded as an ID
+        const currentHourWeather = await getWeatherForCurrentHour(location, 'location');
+        
         renderHourlyWeather(currentHourWeather.current);
         const dailyForecast = await getDailyForecast(location.latitude, location.longitude);
         renderDailyForecast(dailyForecast.hourly);
@@ -41,7 +43,82 @@ function renderHourlyWeather(weather) {
     document.getElementById('current-hour-precipitation').innerText = `${weather.precipitation} mm`;
 }
 
-async function getWeatherForCurrentHour(latitude, longitude) {
+async function getWeatherForCurrentHour(location, locationId) {
+    const cachedForecast = getWeatherForCurrentHourFromCache(locationId, 'currentForecast')
+    
+    if (cachedForecast) {
+        return cachedForecast;
+    } else {
+        const forecast = await getWeatherForCurrentHourFromAPI(location.latitude, location.longitude);
+        writeRequestToCache(forecast, locationId, 'currentForecast')
+        return forecast;
+    }
+}
+
+function getWeatherForCurrentHourFromCache(locationID, cacheType) {
+    const cacheData = localStorage.getItem('cache-data');
+    let cacheId;
+    if (cacheData) {
+        const cacheDataJSON = JSON.parse(cacheData)
+
+        for (let index = 0; index < cacheDataJSON.length; index++) {
+            let cacheLocationId = Object.keys(cacheDataJSON[index]);
+            
+            if (cacheLocationId == locationID) {
+                for (let i = 0; i < cacheDataJSON[index][cacheLocationId].length; i++) {
+                    const element = cacheDataJSON[index][cacheLocationId][i];
+                    
+                    if (element.type == cacheType) {
+                        if (Date.now() < element.expires) {
+                            cacheId = element.id;
+                            return JSON.parse(localStorage.getItem(cacheId));
+                        } else {
+                            cacheDataJSON[index][cacheLocationId].splice(i, 1);
+                            localStorage.setItem('cache-data', JSON.stringify(cacheDataJSON));
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
+function writeRequestToCache(request, locationId, cacheType, timeToExpire = 900000) {
+    const cacheData = localStorage.getItem('cache-data')
+    const cacheId = crypto.randomUUID();
+
+    // 1 hour: 3600000 ms
+    // 15 min: 900000 ms
+    const expireTime = Date.now() + timeToExpire;
+    const newCache = { 'id': cacheId, 'type': cacheType, 'expires': expireTime }
+
+    localStorage.setItem(cacheId, JSON.stringify(request))
+
+    if (cacheData) {
+        const cacheDataJSON = JSON.parse(cacheData)
+
+        cacheDataJSON.forEach((element, index) => {
+            let cacheLocationId = Object.keys(element);
+            if (cacheLocationId == locationId) {
+                cacheDataJSON[index][cacheLocationId].push(newCache)
+                
+                localStorage.setItem('cache-data', JSON.stringify(cacheDataJSON))
+            }
+        });
+    } else {
+        // The square brackets that wrap locationId are needed to use the value of the variable, not the name
+        const newCacheData = [{
+            [locationId]: [
+                newCache
+            ]
+        }]
+        localStorage.setItem('cache-data', JSON.stringify(newCacheData))
+    }
+}
+
+async function getWeatherForCurrentHourFromAPI(latitude, longitude) {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m&timezone=auto`;
 
     const request = await fetch(url);
