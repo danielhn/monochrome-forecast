@@ -30,6 +30,7 @@ function getForecastFromCache(locationID, cacheType) {
                         } else {
                             cacheDataJSON[index][cacheLocationId].splice(i, 1);
                             localStorage.setItem('cache-data', JSON.stringify(cacheDataJSON));
+                            localStorage.removeItem(element.id)
                             return false;
                         }
                     }
