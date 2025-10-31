@@ -1,3 +1,5 @@
+import { getLocationFromLocalStorage, storeLocationInLocalStorage, getForecastFromCache, writeRequestToCache } from "./storage.js";
+
 window.addEventListener("load", () => {
     renderLocationStored()
 });
@@ -16,14 +18,6 @@ async function renderLocationStored() {
         const dailyForecast = await getDailyForecast(location, 'location');
         renderDailyForecast(dailyForecast.hourly);
     }
-}
-
-function getLocationFromLocalStorage() {
-    if (localStorage.getItem('location')) {
-        return JSON.parse(localStorage.getItem('location'))
-    } else {
-        console.log('No location found stored');
-    } 
 }
 
 function renderLocationData(location) {
@@ -54,76 +48,12 @@ async function getWeatherForCurrentHour(location, locationId) {
     }
 }
 
-function getForecastFromCache(locationID, cacheType) {
-    const cacheData = localStorage.getItem('cache-data');
-    let cacheId;
-    if (cacheData) {
-        const cacheDataJSON = JSON.parse(cacheData)
-
-        for (let index = 0; index < cacheDataJSON.length; index++) {
-            let cacheLocationId = Object.keys(cacheDataJSON[index]);
-            
-            if (cacheLocationId == locationID) {
-                for (let i = 0; i < cacheDataJSON[index][cacheLocationId].length; i++) {
-                    const element = cacheDataJSON[index][cacheLocationId][i];
-                    
-                    if (element.type == cacheType) {
-                        if (Date.now() < element.expires) {
-                            cacheId = element.id;
-                            return JSON.parse(localStorage.getItem(cacheId));
-                        } else {
-                            cacheDataJSON[index][cacheLocationId].splice(i, 1);
-                            localStorage.setItem('cache-data', JSON.stringify(cacheDataJSON));
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return false;
-}
-
-function writeRequestToCache(request, locationId, cacheType, timeToExpire = 900000) {
-    const cacheData = localStorage.getItem('cache-data')
-    const cacheId = crypto.randomUUID();
-
-    // 1 hour: 3600000 ms
-    // 15 min: 900000 ms
-    const expireTime = Date.now() + timeToExpire;
-    const newCache = { 'id': cacheId, 'type': cacheType, 'expires': expireTime }
-
-    localStorage.setItem(cacheId, JSON.stringify(request))
-
-    if (cacheData) {
-        const cacheDataJSON = JSON.parse(cacheData)
-
-        cacheDataJSON.forEach((element, index) => {
-            let cacheLocationId = Object.keys(element);
-            if (cacheLocationId == locationId) {
-                cacheDataJSON[index][cacheLocationId].push(newCache)
-                
-                localStorage.setItem('cache-data', JSON.stringify(cacheDataJSON))
-            }
-        });
-    } else {
-        // The square brackets that wrap locationId are needed to use the value of the variable, not the name
-        const newCacheData = [{
-            [locationId]: [
-                newCache
-            ]
-        }]
-        localStorage.setItem('cache-data', JSON.stringify(newCacheData))
-    }
-}
-
 async function getWeatherForCurrentHourFromAPI(latitude, longitude) {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m&timezone=auto`;
 
     const request = await fetch(url);
     return await request.json();
 }
-
 
 async function getDailyForecast(location, locationId) {
     const cachedForecast = getForecastFromCache(locationId, 'dailyForecast');
@@ -225,7 +155,6 @@ newLocationInput.addEventListener('keyup', async (key) => {
 
 });
 
-
 const searchSuggestionsContainer = document.getElementById("search-suggestions");
 searchSuggestionsContainer.addEventListener('click', (e) => {
     if (e.target.classList.contains('list-group-item')) {
@@ -239,7 +168,3 @@ searchSuggestionsContainer.addEventListener('click', (e) => {
         renderLocationStored()
     }
 });
-
-function storeLocationInLocalStorage(latitude, longitude, name) {
-    localStorage.setItem('location', JSON.stringify({'name': name, 'latitude': latitude, 'longitude': longitude}))
-}
