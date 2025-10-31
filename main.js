@@ -12,9 +12,8 @@ async function renderLocationStored() {
         renderLocationData(location);
         // At the moment only a single location is supported, so 'location' is hardcoded as an ID
         const currentHourWeather = await getWeatherForCurrentHour(location, 'location');
-        
         renderHourlyWeather(currentHourWeather.current);
-        const dailyForecast = await getDailyForecast(location.latitude, location.longitude);
+        const dailyForecast = await getDailyForecast(location, 'location');
         renderDailyForecast(dailyForecast.hourly);
     }
 }
@@ -44,7 +43,7 @@ function renderHourlyWeather(weather) {
 }
 
 async function getWeatherForCurrentHour(location, locationId) {
-    const cachedForecast = getWeatherForCurrentHourFromCache(locationId, 'currentForecast')
+    const cachedForecast = getForecastFromCache(locationId, 'currentForecast')
     
     if (cachedForecast) {
         return cachedForecast;
@@ -55,7 +54,7 @@ async function getWeatherForCurrentHour(location, locationId) {
     }
 }
 
-function getWeatherForCurrentHourFromCache(locationID, cacheType) {
+function getForecastFromCache(locationID, cacheType) {
     const cacheData = localStorage.getItem('cache-data');
     let cacheId;
     if (cacheData) {
@@ -125,7 +124,20 @@ async function getWeatherForCurrentHourFromAPI(latitude, longitude) {
     return await request.json();
 }
 
-async function getDailyForecast(latitude, longitude) {
+
+async function getDailyForecast(location, locationId) {
+    const cachedForecast = getForecastFromCache(locationId, 'dailyForecast');
+
+    if (cachedForecast) {
+        return cachedForecast;
+    } else {
+        const forecast = await getDailyForecastFromAPI(location.latitude, location.longitude);
+        writeRequestToCache(forecast, locationId, 'dailyForecast', 3600000);
+        return forecast;
+    }
+}
+
+async function getDailyForecastFromAPI(latitude, longitude) {
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m&past_hours=0&timezone=auto`;
 
     const request = await fetch(url);
