@@ -17,9 +17,35 @@
     </head>
 
     <body>
+        <nav class="navbar bg-body-tertiary">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLocations"
+                        aria-controls="offcanvasNavbarLocations" aria-label="Toggle navigation">
+                    <!-- <span class="navbar-toggler-icon"></span> -->
+                    <i class="bi bi-pin-map-fill"></i>
+                </button>
+                <div class="">
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLocation"><i
+                           class="bi bi-geo-alt"></i></button>
+                    <button class="btn btn-primary" type="button"><i class="bi bi-sliders"></i></button>
+                </div>
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbarLocations" aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">List of locations</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <hr>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Location</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
         <div class="container mt-4">
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLocation">Add location</button>
-
             <div class="modal fade" id="addLocation" tabindex="-1" aria-labelledby="addLocationLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
