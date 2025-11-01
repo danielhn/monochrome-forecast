@@ -7,6 +7,14 @@ function getLocationIdFromFirstLocation() {
     }
 }
 
+function getActiveLocation() {
+    return sessionStorage.getItem('active-location')
+}
+
+function setLocationAsActive(locationId) {
+    sessionStorage.setItem('active-location', locationId)
+}
+
 function getLocationFromLocalStorage(locationId) {
     const locations = localStorage.getItem('locations')
     if (locations) {
@@ -111,4 +119,4 @@ function writeRequestToCache(request, locationId, cacheType, timeToExpire = 9000
     }
 }
 
-export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage };
+export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive };

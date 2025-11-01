@@ -1,11 +1,12 @@
-import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation, getAllLocationsFromLocalStorage } from "./storage.js";
+import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive } from "./storage.js";
 import { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar } from "./render.js";
 
 window.addEventListener("load", () => {
     const locations = getAllLocationsFromLocalStorage();
     if (locations) {
         renderLocationsInSidebar(locations)
-        fetchAndRenderLocation()
+        const activeLocation = getActiveLocation()
+        fetchAndRenderLocation(activeLocation)
     }
 });
 
@@ -121,6 +122,7 @@ const locationsContainer = document.getElementById("locations-container");
 locationsContainer.addEventListener('click', (e) => {
     if (e.target.classList.contains('btn-secondary')) {
         const locationId = e.target.dataset.locationId;
+        setLocationAsActive(locationId)
         fetchAndRenderLocation(locationId)
     }
 });
