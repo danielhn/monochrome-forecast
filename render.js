@@ -4,6 +4,20 @@ function renderLocationData(location) {
     document.getElementById("location-name").innerText = location.name;
 }
 
+function renderLocationsInSidebar(locations) {
+    document.getElementById("locations-container").innerHTML = '';
+    locations.forEach(locationId => {
+            const location = JSON.parse(localStorage.getItem(locationId))
+            document.getElementById("locations-container").innerHTML += `
+            <li class="nav-item mb-2">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-secondary" data-location-id="${locationId}">${location.name}</button>
+                    <button type="button" class="btn btn-danger" data-location-id="${locationId}" aria-label="Delete location"><i class="bi bi-x-circle-fill"></i></button>
+                </div>
+            </li>`;
+    });
+}
+
 function renderHourlyWeather(weather) {
     const currentHour = new Date(weather.time).toLocaleTimeString();
     document.getElementById('current-hour-data-time').innerHTML = currentHour;
@@ -62,4 +76,4 @@ function renderWeatherCard(dailyForecast, hour, days) {
     document.getElementById(`card-container-${days}`).innerHTML += card;
 }
 
-export {renderLocationData, renderHourlyWeather, renderDailyForecast}
+export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar}

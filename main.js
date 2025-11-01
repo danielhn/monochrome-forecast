@@ -1,8 +1,12 @@
-import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation } from "./storage.js";
-import { renderLocationData, renderHourlyWeather, renderDailyForecast } from "./render.js";
+import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation, getAllLocationsFromLocalStorage } from "./storage.js";
+import { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar } from "./render.js";
 
 window.addEventListener("load", () => {
-    fetchAndRenderLocation()
+    const locations = getAllLocationsFromLocalStorage();
+    if (locations) {
+        renderLocationsInSidebar(locations)
+        fetchAndRenderLocation()
+    }
 });
 
 async function fetchAndRenderLocation(locationId) {
@@ -102,10 +106,21 @@ searchSuggestionsContainer.addEventListener('click', (e) => {
         const latitude = e.target.dataset.latitude;
         const longitude = e.target.dataset.longitude
         const name = e.target.innerText;
-
         const locationId = addLocationToLocalStorage(latitude, longitude, name)
+        const locations = getAllLocationsFromLocalStorage();
+
         newLocationInput.value = '';
         searchSuggestionsContainer.innerHTML = '';
+
+        renderLocationsInSidebar(locations)
+        fetchAndRenderLocation(locationId)
+    }
+});
+
+const locationsContainer = document.getElementById("locations-container");
+locationsContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn-secondary')) {
+        const locationId = e.target.dataset.locationId;
         fetchAndRenderLocation(locationId)
     }
 });

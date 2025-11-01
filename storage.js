@@ -17,6 +17,13 @@ function getLocationFromLocalStorage(locationId) {
     }
 }
 
+function getAllLocationsFromLocalStorage() {
+    const locations = localStorage.getItem('locations');
+    if (localStorage.getItem('locations')) {
+        return JSON.parse(locations);
+    }
+}
+
 function addLocationToLocalStorage(latitude, longitude, name) {
     const locations = localStorage.getItem('locations')
     const locationId = crypto.randomUUID();
@@ -104,4 +111,4 @@ function writeRequestToCache(request, locationId, cacheType, timeToExpire = 9000
     }
 }
 
-export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache};
+export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage };
