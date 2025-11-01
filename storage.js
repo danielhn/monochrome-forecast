@@ -1,13 +1,36 @@
-function getLocationFromLocalStorage() {
-    if (localStorage.getItem('location')) {
-        return JSON.parse(localStorage.getItem('location'));
+function getLocationIdFromFirstLocation() {
+    const locations = localStorage.getItem('locations')
+    if (locations) {
+        return JSON.parse(localStorage.getItem('locations'))[0];
     } else {
-        console.log('No location found stored');
+        return false;
     }
 }
 
-function storeLocationInLocalStorage(latitude, longitude, name) {
-    localStorage.setItem('location', JSON.stringify({ 'name': name, 'latitude': latitude, 'longitude': longitude }));
+function getLocationFromLocalStorage(locationId) {
+    const locations = localStorage.getItem('locations')
+    if (locations) {
+        return JSON.parse(localStorage.getItem(locationId));
+    } else {
+        console.log('No location found stored');
+        return false;
+    }
+}
+
+function addLocationToLocalStorage(latitude, longitude, name) {
+    const locations = localStorage.getItem('locations')
+    const locationId = crypto.randomUUID();
+
+    if (locations) {
+        const locationsArray = JSON.parse(locations)
+        locationsArray.push(locationId)
+        localStorage.setItem('locations', JSON.stringify(locationsArray));
+    } else {
+        localStorage.setItem('locations', JSON.stringify([locationId]));
+    }
+
+    localStorage.setItem(locationId, JSON.stringify({ 'name': name, 'latitude': latitude, 'longitude': longitude }));
+    return locationId;
 }
 
 function getForecastFromCache(locationID, cacheType) {
@@ -54,15 +77,22 @@ function writeRequestToCache(request, locationId, cacheType, timeToExpire = 9000
 
     if (cacheData) {
         const cacheDataJSON = JSON.parse(cacheData);
+        let locationFound = false;
 
-        cacheDataJSON.forEach((element, index) => {
-            let cacheLocationId = Object.keys(element);
+        for (let index = 0; index < cacheDataJSON.length; index++) {
+            let cacheLocationId = Object.keys(cacheDataJSON[index]);
             if (cacheLocationId == locationId) {
+                locationFound = true;
                 cacheDataJSON[index][cacheLocationId].push(newCache);
+                break;
+            }            
+        }
 
-                localStorage.setItem('cache-data', JSON.stringify(cacheDataJSON));
-            }
-        });
+        if (!locationFound) {
+            cacheDataJSON.push({[locationId]: [newCache]})
+        }
+
+        localStorage.setItem('cache-data', JSON.stringify(cacheDataJSON));
     } else {
         // The square brackets that wrap locationId are needed to use the value of the variable, not the name
         const newCacheData = [{
@@ -74,5 +104,4 @@ function writeRequestToCache(request, locationId, cacheType, timeToExpire = 9000
     }
 }
 
-
-export {getLocationFromLocalStorage, storeLocationInLocalStorage, getForecastFromCache, writeRequestToCache};
+export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache};

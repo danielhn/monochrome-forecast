@@ -1,22 +1,24 @@
-import { getLocationFromLocalStorage, storeLocationInLocalStorage, getForecastFromCache, writeRequestToCache } from "./storage.js";
+import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation } from "./storage.js";
 import { renderLocationData, renderHourlyWeather, renderDailyForecast } from "./render.js";
 
 window.addEventListener("load", () => {
     fetchAndRenderLocation()
 });
 
-async function fetchAndRenderLocation() {
-    const location = getLocationFromLocalStorage();
+async function fetchAndRenderLocation(locationId) {
+    if (!locationId) {
+        locationId = getLocationIdFromFirstLocation();
+    }
+    const location = getLocationFromLocalStorage(locationId);
 
     if (location) {
         document.getElementById("current-hour-container").classList.remove('d-none')
         document.getElementById("no-location-found-title").classList.add('d-none')
 
         renderLocationData(location);
-        // At the moment only a single location is supported, so 'location' is hardcoded as an ID
-        const currentHourWeather = await getWeatherForCurrentHour(location, 'location');
+        const currentHourWeather = await getWeatherForCurrentHour(location, locationId);
         renderHourlyWeather(currentHourWeather.current);
-        const dailyForecast = await getDailyForecast(location, 'location');
+        const dailyForecast = await getDailyForecast(location, locationId);
         renderDailyForecast(dailyForecast.hourly);
     }
 }
@@ -101,9 +103,9 @@ searchSuggestionsContainer.addEventListener('click', (e) => {
         const longitude = e.target.dataset.longitude
         const name = e.target.innerText;
 
-        storeLocationInLocalStorage(latitude, longitude, name)
+        const locationId = addLocationToLocalStorage(latitude, longitude, name)
         newLocationInput.value = '';
         searchSuggestionsContainer.innerHTML = '';
-        fetchAndRenderLocation()
+        fetchAndRenderLocation(locationId)
     }
 });
