@@ -1,4 +1,4 @@
-weatherCodes = {
+const weatherCodes = {
     "0": {
         "description": "Clear sky",
         "icon": "bi bi-sun"
@@ -112,3 +112,5 @@ weatherCodes = {
         "icon": "bi bi-cloud-hail"
     }
 };
+
+export default weatherCodes;

@@ -1,3 +1,5 @@
+import weatherCodes from "./weatherCodes.js";
+
 function renderLocationData(location) {
     document.getElementById("location-name").innerText = location.name;
 }
