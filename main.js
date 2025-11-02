@@ -1,4 +1,4 @@
-import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive } from "./storage.js";
+import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache } from "./storage.js";
 import { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar } from "./render.js";
 
 window.addEventListener("load", () => {
@@ -120,9 +120,24 @@ searchSuggestionsContainer.addEventListener('click', (e) => {
 
 const locationsContainer = document.getElementById("locations-container");
 locationsContainer.addEventListener('click', (e) => {
+    console.log(e.target.parentElement.dataset.locationId);
+    
     if (e.target.classList.contains('btn-secondary')) {
         const locationId = e.target.dataset.locationId;
         setLocationAsActive(locationId)
         fetchAndRenderLocation(locationId)
+    } else if (e.target.classList.contains('btn-danger') || e.target.classList.contains('bi-x-circle-fill')) {
+        let locationId;
+        if (e.target.classList.contains('bi-x-circle-fill')) {
+            locationId = e.target.parentElement.dataset.locationId;   
+        } else {
+            locationId = e.target.dataset.locationId;
+        }
+
+        deleteLocationWithCache(locationId)
+        const locations = getAllLocationsFromLocalStorage();
+
+        renderLocationsInSidebar(locations)
+        fetchAndRenderLocation()
     }
 });

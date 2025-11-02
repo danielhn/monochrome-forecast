@@ -15,6 +15,17 @@ function setLocationAsActive(locationId) {
     sessionStorage.setItem('active-location', locationId)
 }
 
+function deleteActiveLocation(locationId) {
+    if (locationId) {
+        // If locationId is passed, check if the location is active. If it is, delete it.
+        if (sessionStorage.getItem('active-location') == locationId) {
+            sessionStorage.removeItem('active-location');
+        }    
+    } else {
+        sessionStorage.removeItem('active-location');
+    }
+}
+
 function getLocationFromLocalStorage(locationId) {
     const locations = localStorage.getItem('locations')
     if (locations) {
@@ -119,4 +130,44 @@ function writeRequestToCache(request, locationId, cacheType, timeToExpire = 9000
     }
 }
 
-export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive };
+function deleteCacheOfLocation(locationId) {
+    const cacheData = JSON.parse(localStorage.getItem('cache-data'));
+    for (let index = 0; index < cacheData.length; index++) {
+        let cacheLocationId = Object.keys(cacheData[index]);
+        if (cacheLocationId == locationId) {
+
+            for (let i = 0; i < cacheData[index][cacheLocationId].length; i++) {
+                const cacheId = cacheData[index][cacheLocationId][i].id;
+                localStorage.removeItem(cacheId);
+            }
+
+            cacheData.splice(index, 1);
+            localStorage.setItem('cache-data', JSON.stringify(cacheData));
+        }
+    }
+}
+
+function deleteLocationData(locationId) {
+    localStorage.removeItem(locationId);
+}
+
+function deleteLocationIdFromLocationsList(locationId) {
+    const locations = JSON.parse(localStorage.getItem('locations'));
+
+    for (let index = 0; index < locations.length; index++) {
+        if (locations[index] == locationId) {
+            locations.splice(index, 1);
+            localStorage.setItem('locations', JSON.stringify(locations));
+            break;
+        }
+    }
+}
+
+function deleteLocationWithCache(locationId) {
+    deleteCacheOfLocation(locationId)
+    deleteLocationData(locationId)
+    deleteLocationIdFromLocationsList(locationId)
+    deleteActiveLocation(locationId)
+}
+
+export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache };
