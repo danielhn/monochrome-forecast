@@ -41,7 +41,7 @@ async function getWeatherForCurrentHour(location, locationId) {
 }
 
 async function getWeatherForCurrentHourFromAPI(latitude, longitude) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m&timezone=auto`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m&timezone=auto&forecast_days=7`;
 
     const request = await fetch(url);
     return await request.json();
@@ -53,14 +53,25 @@ async function getDailyForecast(location, locationId) {
     if (cachedForecast) {
         return cachedForecast;
     } else {
-        const forecast = await getDailyForecastFromAPI(location.latitude, location.longitude);
+        let forecast = await getDailyForecastFromAPI(location.latitude, location.longitude);
+        forecast = hidePastHoursInForecast(forecast)
         writeRequestToCache(forecast, locationId, 'dailyForecast', 3600000);
         return forecast;
     }
 }
 
+// The API supports a past_hour parameter, but if used at the moment (02/11/2025), it always returns a 16 day forecast,
+// even if the forecast_days with another value is specified.
+function hidePastHoursInForecast(forecast) {
+    const currentHour = new Date(Date.now()).getHours()
+    for (const key in forecast.hourly) {
+        forecast.hourly[key].splice(0, currentHour)
+    }
+    return forecast;
+}
+
 async function getDailyForecastFromAPI(latitude, longitude) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m&past_hours=0&timezone=auto`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m&timezone=auto`;
 
     const request = await fetch(url);
     return await request.json();
