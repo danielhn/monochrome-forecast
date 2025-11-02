@@ -1,3 +1,4 @@
+// Codes and descriptions from: https://open-meteo.com/en/docs#weather_variable_documentation
 const weatherCodes = {
     "0": {
         "description": "Clear sky",
