@@ -147,6 +147,23 @@ function deleteCacheOfLocation(locationId) {
     }
 }
 
+function deleteCacheOfAllLocations() {
+    if (localStorage.getItem('cache-data')) {
+        const cacheData = JSON.parse(localStorage.getItem('cache-data'));
+        for (let index = 0; index < cacheData.length; index++) {
+            let cacheLocationId = Object.keys(cacheData[index]);
+
+            for (let i = 0; i < cacheData[index][cacheLocationId].length; i++) {
+                const cacheId = cacheData[index][cacheLocationId][i].id;
+                localStorage.removeItem(cacheId);
+            }
+
+            cacheData.splice(index, 1);
+            localStorage.setItem('cache-data', JSON.stringify(cacheData));
+        }
+    }
+}
+
 function deleteLocationData(locationId) {
     localStorage.removeItem(locationId);
 }
@@ -178,4 +195,4 @@ function storeConfiguration(newConfiguration) {
     localStorage.setItem('configuration', JSON.stringify(newConfiguration))
 }
 
-export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration };
+export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations };

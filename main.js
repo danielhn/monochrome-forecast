@@ -1,4 +1,4 @@
-import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration } from "./storage.js";
+import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations } from "./storage.js";
 import { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar } from "./render.js";
 
 window.addEventListener("load", () => {
@@ -22,9 +22,9 @@ async function fetchAndRenderLocation(locationId) {
 
         renderLocationData(location);
         const currentHourWeather = await getWeatherForCurrentHour(location, locationId);
-        renderHourlyWeather(currentHourWeather.current);
+        renderHourlyWeather(currentHourWeather.current, currentHourWeather.current_units);
         const dailyForecast = await getDailyForecast(location, locationId);
-        renderDailyForecast(dailyForecast.hourly);
+        renderDailyForecast(dailyForecast.hourly, dailyForecast.hourly_units);
     }
 }
 
@@ -34,14 +34,15 @@ async function getWeatherForCurrentHour(location, locationId) {
     if (cachedForecast) {
         return cachedForecast;
     } else {
-        const forecast = await getWeatherForCurrentHourFromAPI(location.latitude, location.longitude);
+        const configuration = getConfiguration()
+        const forecast = await getWeatherForCurrentHourFromAPI(location.latitude, location.longitude, configuration['wind_speed_unit'], configuration['temperature_unit'], configuration['precipitation_unit']);
         writeRequestToCache(forecast, locationId, 'currentForecast')
         return forecast;
     }
 }
 
-async function getWeatherForCurrentHourFromAPI(latitude, longitude) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m&timezone=auto&forecast_days=7`;
+async function getWeatherForCurrentHourFromAPI(latitude, longitude, windSpeedUnit = 'kms', temperatureUnit = 'celsius', precipitationUnit = 'mm') {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m&timezone=auto&wind_speed_unit=${windSpeedUnit}&temperature_unit=${temperatureUnit}&precipitation_unit=${precipitationUnit}`;
 
     const request = await fetch(url);
     return await request.json();
@@ -53,7 +54,8 @@ async function getDailyForecast(location, locationId) {
     if (cachedForecast) {
         return cachedForecast;
     } else {
-        let forecast = await getDailyForecastFromAPI(location.latitude, location.longitude);
+        const configuration = getConfiguration()
+        let forecast = await getDailyForecastFromAPI(location.latitude, location.longitude, configuration['forecast_days'], configuration['wind_speed_unit'], configuration['temperature_unit'], configuration['precipitation_unit']);
         forecast = hidePastHoursInForecast(forecast)
         writeRequestToCache(forecast, locationId, 'dailyForecast', 3600000);
         return forecast;
@@ -70,8 +72,8 @@ function hidePastHoursInForecast(forecast) {
     return forecast;
 }
 
-async function getDailyForecastFromAPI(latitude, longitude) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m&timezone=auto`;
+async function getDailyForecastFromAPI(latitude, longitude, forecastDays = 7, windSpeedUnit = 'kms', temperatureUnit = 'celsius', precipitationUnit = 'mm') {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,wind_speed_10m&timezone=auto&forecast_days=${forecastDays}&wind_speed_unit=${windSpeedUnit}&temperature_unit=${temperatureUnit}&precipitation_unit=${precipitationUnit}`;
 
     const request = await fetch(url);
     return await request.json();
@@ -137,7 +139,13 @@ configurationForm.addEventListener("submit", (event) => {
 
         }
     }
+
     storeConfiguration(newConfiguration)
+    deleteCacheOfAllLocations()
+    fetchAndRenderLocation()
+
+    const configurationModal = bootstrap.Modal.getInstance(document.getElementById('configurationModal'))
+    configurationModal.hide()
 });
 
 
