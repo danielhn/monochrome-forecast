@@ -53,6 +53,9 @@ function renderWeatherCard(dailyForecast, hour, days, units) {
                     <h2 class="card-title fs-3 text-center">${date}</h2>
                     <ul class="list-group list-group-flush">
                             <li class="list-group-item">
+                                <i class='${weatherCodes[dailyForecast.weather_code[hour]].icon}'></i> ${weatherCodes[dailyForecast.weather_code[hour]].description}
+                            </li>
+                            <li class="list-group-item">
                                 <i class="bi bi-thermometer"></i> ${dailyForecast.temperature_2m[hour]} ${units.temperature_2m} - Feels like ${dailyForecast.apparent_temperature[hour]} ${units.apparent_temperature}
                             </li>
                             <li class="list-group-item">
