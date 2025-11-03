@@ -170,4 +170,12 @@ function deleteLocationWithCache(locationId) {
     deleteActiveLocation(locationId)
 }
 
-export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache };
+function getConfiguration() {
+    return JSON.parse(localStorage.getItem('configuration'))
+}
+
+function storeConfiguration(newConfiguration) {
+    localStorage.setItem('configuration', JSON.stringify(newConfiguration))
+}
+
+export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration };

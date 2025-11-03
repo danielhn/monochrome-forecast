@@ -1,4 +1,4 @@
-import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache } from "./storage.js";
+import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration } from "./storage.js";
 import { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar } from "./render.js";
 
 window.addEventListener("load", () => {
@@ -111,6 +111,35 @@ newLocationInput.addEventListener('keyup', async (key) => {
     }
 
 });
+
+const rangeInput = document.getElementById('configurationForecastDays');
+const rangeOutput = document.getElementById('forecastDaysOutput');
+
+rangeOutput.textContent = rangeInput.value;
+
+rangeInput.addEventListener('input', function () {
+    rangeOutput.textContent = this.value;
+});
+
+const configurationForm = document.getElementById("configuration-form");
+configurationForm.addEventListener("submit", (event) => {
+    event.preventDefault()
+
+    let newConfiguration = {}
+    const forecastDays = document.getElementById("configurationForecastDays").value
+
+    newConfiguration['forecast_days'] = forecastDays
+    
+    for (let index = 0; index < configurationForm.elements.length; index++) {
+        const field = configurationForm.elements[index]
+        if (field.checked) {
+            newConfiguration[field.name] = field.value
+
+        }
+    }
+    storeConfiguration(newConfiguration)
+});
+
 
 const searchSuggestionsContainer = document.getElementById("search-suggestions");
 searchSuggestionsContainer.addEventListener('click', (e) => {

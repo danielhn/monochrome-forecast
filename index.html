@@ -26,7 +26,7 @@
                 <div class="">
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLocation"><i
                            class="bi bi-geo-alt"></i></button>
-                    <button class="btn btn-primary" type="button"><i class="bi bi-sliders"></i></button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#configurationModal" type="button"><i class="bi bi-sliders"></i></button>
                 </div>
                 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbarLocations" aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
@@ -42,6 +42,72 @@
             </div>
         </nav>
         <div class="container mt-4">
+            <!-- Configuration modal -->
+            <div class="modal fade" id="configurationModal" tabindex="-1" aria-labelledby="configurationModalTitle" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="configurationModalTitle">Configuration</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="configuration-form">
+                                <div class="mb-3">
+                                    <label for="configurationForecastDays" class="form-label">Forecast days</label>
+                                    <input type="range" class="form-range" min="1" max="16" value="7" id="configurationForecastDays">
+                                    <output for="configurationForecastDays" id="forecastDaysOutput" aria-hidden="true"></output>
+                                </div>
+                                <div class="mb-3">
+                                    <p>Temperature Unit</p>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="temperature_unit" id="temperatureUnitCelsius" value="celsius" checked>
+                                        <label class="form-check-label" for="temperatureUnitCelsius">Celsius</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="temperature_unit" id="temperatureUnitFahrenheit" value="fahrenheit">
+                                        <label class="form-check-label" for="temperatureUnitFahrenheit">Fahrenheit</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <p>Wind Speed Unit</p>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="wind_speed_unit" id="windSpeedUnitKmH" value="kmh" checked>
+                                        <label class="form-check-label" for="windSpeedUnitKmH">Km/h</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="wind_speed_unit" id="windSpeedUnitMs" value="ms">
+                                        <label class="form-check-label" for="windSpeedUnitMs">m/s</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="wind_speed_unit" id="windSpeedUnitMph" value="mph">
+                                        <label class="form-check-label" for="windSpeedUnitMph">mph</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="wind_speed_unit" id="windSpeedUnitKnots" value="kn">
+                                        <label class="form-check-label" for="windSpeedUnitKnots">Knots</label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <p>Precipitation Unit</p>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="precipitation_unit" id="precipitationUnitMm" value="mm" checked>
+                                        <label class="form-check-label" for="precipitationUnitMm">Millimeter</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="precipitation_unit" id="precipitationUnitInch" value="inch">
+                                        <label class="form-check-label" for="precipitationUnitInch">Inch</label>
+                                    </div>
+                                </div>
+                                <div class="border-top">
+                                    <button type="submit" class="btn btn-primary mt-3">Save changes</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add location modal -->
             <div class="modal fade" id="addLocation" tabindex="-1" aria-labelledby="addLocationLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
