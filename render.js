@@ -79,4 +79,35 @@ function renderWeatherCard(dailyForecast, hour, days, units) {
     document.getElementById(`card-container-${days}`).innerHTML += card;
 }
 
-export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar}
+function renderConfigurationStoredToModal(configuration) {
+    document.getElementById("configurationForecastDays").value = configuration['forecast_days']
+    document.getElementById("configurationForecastDays").defaultValue = configuration['forecast_days']
+    
+    document.getElementById("forecastDaysOutput").value = configuration['forecast_days']
+    document.getElementById("forecastDaysOutput").defaultValue = configuration['forecast_days']
+
+    const temperatureUnits = document.querySelectorAll('[name=temperature_unit]')
+    
+    for (let index = 0; index < temperatureUnits.length; index++) {
+        if (temperatureUnits[index].value == configuration['temperature_unit']) {
+            //console.log(temperatureUnits[index]);
+            temperatureUnits[index].checked = true;
+        }     
+    }
+
+    const windSpeedUnits = document.querySelectorAll('[name=wind_speed_unit]')
+    for (let index = 0; index < windSpeedUnits.length; index++) {
+        if (windSpeedUnits[index].value == configuration['wind_speed_unit']) {
+            windSpeedUnits[index].checked = true;
+        }
+    }
+
+    const precipitationUnits = document.querySelectorAll('[name=precipitation_unit]')
+    for (let index = 0; index < precipitationUnits.length; index++) {
+        if (precipitationUnits[index].value == configuration['precipitation_unit']) {
+            precipitationUnits[index].checked = true;
+        }
+    }
+}
+
+export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal }

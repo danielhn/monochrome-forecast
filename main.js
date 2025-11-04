@@ -1,5 +1,5 @@
 import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations } from "./storage.js";
-import { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar } from "./render.js";
+import { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal } from "./render.js";
 
 window.addEventListener("load", () => {
     const locations = getAllLocationsFromLocalStorage();
@@ -7,6 +7,10 @@ window.addEventListener("load", () => {
         renderLocationsInSidebar(locations)
         const activeLocation = getActiveLocation()
         fetchAndRenderLocation(activeLocation)
+    }
+    const configuration = getConfiguration()
+    if (configuration) {
+        renderConfigurationStoredToModal(configuration)
     }
 });
 
@@ -148,6 +152,12 @@ configurationForm.addEventListener("submit", (event) => {
     configurationModal.hide()
 });
 
+const configurationModal = document.getElementById('configurationModal')
+configurationModal.addEventListener('hidden.bs.modal', () => {
+    if (!getConfiguration()) {
+        document.getElementById("configuration-form").reset();
+    }
+})
 
 const searchSuggestionsContainer = document.getElementById("search-suggestions");
 searchSuggestionsContainer.addEventListener('click', (e) => {
