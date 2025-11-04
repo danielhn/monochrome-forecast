@@ -8,10 +8,6 @@ window.addEventListener("load", () => {
         const activeLocation = getActiveLocation()
         fetchAndRenderLocation(activeLocation)
     }
-    const configuration = getConfiguration()
-    if (configuration) {
-        renderConfigurationStoredToModal(configuration)
-    }
 });
 
 async function fetchAndRenderLocation(locationId) {
@@ -156,6 +152,12 @@ const configurationModal = document.getElementById('configurationModal')
 configurationModal.addEventListener('hidden.bs.modal', () => {
     if (!getConfiguration()) {
         document.getElementById("configuration-form").reset();
+    }
+})
+configurationModal.addEventListener('show.bs.modal', () => {
+    const configuration = getConfiguration()
+    if (configuration) {
+        renderConfigurationStoredToModal(configuration)
     }
 })
 
