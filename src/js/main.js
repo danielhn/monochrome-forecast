@@ -157,11 +157,6 @@ configurationForm.addEventListener("submit", (event) => {
 });
 
 const configurationModal = document.getElementById('configurationModal')
-configurationModal.addEventListener('hidden.bs.modal', () => {
-    if (!getConfiguration()) {
-        document.getElementById("configuration-form").reset();
-    }
-})
 configurationModal.addEventListener('show.bs.modal', () => {
     const configuration = getConfiguration()
     if (configuration) {
