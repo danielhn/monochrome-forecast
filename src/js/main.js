@@ -2,7 +2,7 @@ import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFrom
 import { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal } from "./render.js";
 
 import 'bootstrap/js/dist/button';
-import 'bootstrap/js/dist/modal';
+import Modal from 'bootstrap/js/dist/modal';
 import 'bootstrap/js/dist/offcanvas';
 
 window.addEventListener("load", () => {
@@ -148,7 +148,7 @@ configurationForm.addEventListener("submit", (event) => {
     deleteCacheOfAllLocations()
     fetchAndRenderLocation()
 
-    const configurationModal = bootstrap.Modal.getInstance(document.getElementById('configurationModal'))
+    const configurationModal = Modal.getInstance(document.getElementById('configurationModal'))
     configurationModal.hide()
 });
 
