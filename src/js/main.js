@@ -7,6 +7,10 @@ import 'bootstrap/js/dist/offcanvas';
 
 window.addEventListener("load", () => {
     const locations = getAllLocationsFromLocalStorage();
+    if (!getConfiguration()) {
+        // Set default configuration if none is found
+        storeConfiguration({"forecast_days": "7", "temperature_unit": "celsius", "wind_speed_unit": "kmh", "precipitation_unit": "mm"})
+    }
     if (locations) {
         renderLocationsInSidebar(locations)
         const activeLocation = getActiveLocation()
