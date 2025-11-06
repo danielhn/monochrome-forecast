@@ -2,11 +2,13 @@
 const weatherCodes = {
     "0": {
         "description": "Clear sky",
-        "icon": "bi bi-sun"
+        "icon": "bi bi-sun",
+        "icon_night": "bi bi-moon"
     },
     "1": {
         "description": "Mainly clear",
-        "icon": "bi bi-cloud-sun"
+        "icon": "bi bi-cloud-sun",
+        "icon_night": "bi bi-cloud-moon"
     },
     "2": {
         "description": "Partly cloudy",

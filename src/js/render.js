@@ -21,7 +21,11 @@ function renderLocationsInSidebar(locations) {
 function renderHourlyWeather(weather, units) {
     const currentHour = new Date(weather.time).toLocaleTimeString();
     document.getElementById('current-hour-data-time').innerHTML = currentHour;
-    document.getElementById('current-hour-weather-code').innerHTML = `<i class='${weatherCodes[weather.weather_code].icon}'></i> ` + weatherCodes[weather.weather_code].description;
+    let icon = weatherCodes[weather.weather_code].icon
+    if (!weather.is_day && weatherCodes[weather.weather_code].icon_night) {
+        icon = weatherCodes[weather.weather_code].icon_night
+    }
+    document.getElementById('current-hour-weather-code').innerHTML = `<i class='${icon}'></i> ` + weatherCodes[weather.weather_code].description;
     document.getElementById('current-hour-temperature').innerText = `${weather.temperature_2m} ${units.temperature_2m} - Feels like ${weather.apparent_temperature} ${units.apparent_temperature}`;
     document.getElementById('current-hour-uv-index').innerText = `UV Index: ${weather.uv_index}`;
     document.getElementById('current-hour-humidity').innerText = `${weather.relative_humidity_2m}${units.relative_humidity_2m} humidity`;
@@ -48,12 +52,16 @@ async function renderDailyForecast(dailyForecast, units) {
 
 function renderWeatherCard(dailyForecast, hour, days, units) {
     const date = new Date(dailyForecast.time[hour]).toLocaleTimeString();
+    let icon = weatherCodes[dailyForecast.weather_code[hour]].icon;
+    if (!dailyForecast.is_day[hour] && weatherCodes[dailyForecast.weather_code[hour]].icon_night) {
+        icon = weatherCodes[dailyForecast.weather_code[hour]].icon_night;
+    }
     const card = `<div class="card me-3 mb-4">
                 <div class="card-body">
                     <h2 class="card-title fs-3 text-center">${date}</h2>
                     <ul class="list-group list-group-flush">
                             <li class="list-group-item">
-                                <i class='${weatherCodes[dailyForecast.weather_code[hour]].icon}'></i> ${weatherCodes[dailyForecast.weather_code[hour]].description}
+                                <i class='${icon}'></i> ${weatherCodes[dailyForecast.weather_code[hour]].description}
                             </li>
                             <li class="list-group-item">
                                 <i class="bi bi-thermometer"></i> ${dailyForecast.temperature_2m[hour]} ${units.temperature_2m} - Feels like ${dailyForecast.apparent_temperature[hour]} ${units.apparent_temperature}

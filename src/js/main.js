@@ -46,7 +46,7 @@ async function getWeatherForCurrentHour(location, locationId) {
 }
 
 async function getWeatherForCurrentHourFromAPI(latitude, longitude, windSpeedUnit = 'kms', temperatureUnit = 'celsius', precipitationUnit = 'mm') {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m&timezone=auto&wind_speed_unit=${windSpeedUnit}&temperature_unit=${temperatureUnit}&precipitation_unit=${precipitationUnit}`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,is_day,wind_speed_10m&timezone=auto&wind_speed_unit=${windSpeedUnit}&temperature_unit=${temperatureUnit}&precipitation_unit=${precipitationUnit}`;
 
     const request = await fetch(url);
     return await request.json();
@@ -77,7 +77,7 @@ function hidePastHoursInForecast(forecast) {
 }
 
 async function getDailyForecastFromAPI(latitude, longitude, forecastDays = 7, windSpeedUnit = 'kms', temperatureUnit = 'celsius', precipitationUnit = 'mm') {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,wind_speed_10m&timezone=auto&forecast_days=${forecastDays}&wind_speed_unit=${windSpeedUnit}&temperature_unit=${temperatureUnit}&precipitation_unit=${precipitationUnit}`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,uv_index,apparent_temperature,precipitation_probability,precipitation,weather_code,is_day,wind_speed_10m&timezone=auto&forecast_days=${forecastDays}&wind_speed_unit=${windSpeedUnit}&temperature_unit=${temperatureUnit}&precipitation_unit=${precipitationUnit}`;
 
     const request = await fetch(url);
     return await request.json();
