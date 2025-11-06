@@ -3,7 +3,7 @@ import { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLoc
 
 import 'bootstrap/js/dist/button';
 import Modal from 'bootstrap/js/dist/modal';
-import 'bootstrap/js/dist/offcanvas';
+import Offcanvas from 'bootstrap/js/dist/offcanvas';
 
 window.addEventListener("load", () => {
     const locations = getAllLocationsFromLocalStorage();
@@ -189,6 +189,8 @@ locationsContainer.addEventListener('click', (e) => {
         const locationId = e.target.dataset.locationId;
         setLocationAsActive(locationId)
         fetchAndRenderLocation(locationId)
+        const locationsOffcanvas = Offcanvas.getInstance(document.getElementById("offcanvasNavbarLocations"))
+        locationsOffcanvas.hide()
     } else if (e.target.classList.contains('btn-danger') || e.target.classList.contains('bi-x-circle-fill')) {
         let locationId;
         if (e.target.classList.contains('bi-x-circle-fill')) {
