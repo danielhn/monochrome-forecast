@@ -4,7 +4,7 @@ export default {
     plugins: [
         purgeCSSPlugin({
             content: ['index.html', '**/*.js'],
-            css: 'scss/styles.scss',
+            css: 'src/scss/styles.scss',
             keyframes: true,
             fontFace: true,
             variables: true
