@@ -19,7 +19,7 @@ function renderLocationsInSidebar(locations) {
 }
 
 function renderHourlyWeather(weather, units) {
-    const currentHour = new Date(weather.time).toLocaleTimeString();
+    const currentHour = new Date(weather.time).toLocaleTimeString(undefined, { timeStyle: "short"});
     document.getElementById('current-hour-data-time').innerHTML = currentHour;
     let icon = weatherCodes[weather.weather_code].icon
     if (!weather.is_day && weatherCodes[weather.weather_code].icon_night) {
@@ -51,7 +51,7 @@ async function renderDailyForecast(dailyForecast, units) {
 }
 
 function renderWeatherCard(dailyForecast, hour, days, units) {
-    const date = new Date(dailyForecast.time[hour]).toLocaleTimeString();
+    const date = new Date(dailyForecast.time[hour]).toLocaleTimeString(undefined, { timeStyle: "short" });
     let icon = weatherCodes[dailyForecast.weather_code[hour]].icon;
     if (!dailyForecast.is_day[hour] && weatherCodes[dailyForecast.weather_code[hour]].icon_night) {
         icon = weatherCodes[dailyForecast.weather_code[hour]].icon_night;
