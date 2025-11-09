@@ -1,5 +1,6 @@
 import { getLocationFromLocalStorage, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations } from "./storage.js";
 import { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal } from "./render.js";
+import { defaultConfiguration } from "./constants.js";
 
 import 'bootstrap/js/dist/button';
 import Modal from 'bootstrap/js/dist/modal';
@@ -9,7 +10,7 @@ window.addEventListener("load", () => {
     const locations = getAllLocationsFromLocalStorage();
     if (!getConfiguration()) {
         // Set default configuration if none is found
-        storeConfiguration({"forecast_days": "7", "temperature_unit": "celsius", "wind_speed_unit": "kmh", "precipitation_unit": "mm"})
+        storeConfiguration(defaultConfiguration)
     }
     if (locations) {
         renderLocationsInSidebar(locations)
