@@ -25,7 +25,7 @@ newLocationInput.addEventListener('keyup', async (key) => {
     const locationName = newLocationInput.value;
     console.log(locationName.length);
 
-    // Avoid making requests to the geocoding API with zero or one character
+    // Avoid making requests to the geocoding API with zero or one characters
     if (locationName.length >= 2) {
         const suggestions = await getSuggestionsFromLocationName(locationName);
 
@@ -65,6 +65,11 @@ searchSuggestionsContainer.addEventListener('click', (e) => {
         fetchAndRenderLocation(locationId)
     }
 });
+
+const newLocationModal = document.getElementById("addLocation")
+newLocationModal.addEventListener('hide.bs.modal', () => {
+    newLocationInput.value = '';
+})
 
 // Locations offcanvas
 
@@ -118,7 +123,6 @@ configurationForm.addEventListener("submit", (event) => {
         const field = configurationForm.elements[index];
         if (field.checked) {
             newConfiguration[field.name] = field.value;
-
         }
     }
 
