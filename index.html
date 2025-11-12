@@ -11,27 +11,24 @@
     </head>
 
     <body>
-        <nav class="navbar bg-body-tertiary">
+        <nav class="navbar border-bottom border-dark-subtle">
             <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLocations"
+                <button class="btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbarLocations"
                         aria-controls="offcanvasNavbarLocations" aria-label="Toggle navigation">
-                    <!-- <span class="navbar-toggler-icon"></span> -->
-                    <i class="bi bi-pin-map-fill"></i>
+                    <i class="bi bi-globe fs-5"></i>
                 </button>
-                <div class="">
+                <div>
                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addLocation"><i
-                           class="bi bi-geo-alt"></i></button>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#configurationModal" type="button"><i class="bi bi-sliders"></i></button>
+                           class="bi bi-geo-alt fs-5"></i></button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#configurationModal" type="button"><i class="bi bi-sliders fs-5"></i></button>
                 </div>
                 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbarLocations" aria-labelledby="offcanvasNavbarLabel">
-                    <div class="offcanvas-header">
+                    <div class="offcanvas-header border-bottom border-dark-subtle">
                         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">List of locations</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
-                    <hr>
                     <div class="offcanvas-body">
-                        <ul id="locations-container" class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                        </ul>
+                        <ul id="locations-container" class="navbar-nav justify-content-end flex-grow-1 pe-3"></ul>
                     </div>
                 </div>
             </div>
@@ -125,19 +122,18 @@
                 </div>
             </div>
 
-            <h1 id="no-location-found-title">No location found. Add a new location to display the forecast</h1>
+            <h1 id="no-location-found-title">No location found. Add a new location to display the forecast.</h1>
 
-            <div id="current-hour-container" class="p-3 mb-4 mt-3 bg-body-secondary d-none">
+            <div id="current-hour-container" class="p-3 mb-5 mt-3 bg-body-tertiary d-none border">
                 <div class="py-2">
-                    <h1 id="location-name" class="display-3 fw-bold text-center">Location 1</h1>
-                    <p id="current-hour-last-updated" class="display-5 fw-normal text-center"></p>
+                    <h1 id="location-name" class="display-3 fw-bold text-center"></h1>
                     <div class="container-fluid">
                         <div class="row mt-5 align-items-center">
                             <div class="col-12 col-lg-6">
                                 <p id="current-hour-weather-code" class="display-5 fw-semibold"></p>
                                 <p id="current-hour-temperature" class="fs-1"></p>
                             </div>
-                            <ul class="col-12 col-lg-6 list-group list-group-flush">
+                            <ul class="col-12 col-lg-6 list-group border-secondary">
                                 <li class="fs-2 list-group-item">
                                     <i class="bi bi-sun"></i> <span id="current-hour-uv-index"></span>
                                 </li>
@@ -154,6 +150,7 @@
                                     <i class="bi bi-droplet"></i> <span id="current-hour-precipitation"></span>
                                 </li>
                             </ul>
+                            <p id="current-hour-last-updated" class="fs-5 fw-normal mt-3 mb-0"></p>
                         </div>
                     </div>
                 </div>

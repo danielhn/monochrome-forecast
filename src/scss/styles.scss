@@ -33,5 +33,13 @@ $bootstrap-icons-font-dir: "bootstrap-icons/font/fonts";
 @import "bootstrap-icons/font/bootstrap-icons";
 
 .card {
-    min-width: 15rem;
+    min-width: 20rem;
+
+    .list-group {
+        font-size: 1.2rem;
+    }
+    
+    .list-group i {
+        font-size: 1.3rem;
+    }
 }

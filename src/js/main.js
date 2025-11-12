@@ -78,9 +78,9 @@ locationsContainer.addEventListener('click', (e) => {
         fetchAndRenderLocation(locationId)
         const locationsOffcanvas = Offcanvas.getInstance(document.getElementById("offcanvasNavbarLocations"))
         locationsOffcanvas.hide()
-    } else if (e.target.classList.contains('btn-danger') || e.target.classList.contains('bi-x-circle-fill')) {
+    } else if (e.target.classList.contains('btn-danger') || e.target.classList.contains('bi-x-lg')) {
         let locationId;
-        if (e.target.classList.contains('bi-x-circle-fill')) {
+        if (e.target.classList.contains('bi-x-lg')) {
             locationId = e.target.parentElement.dataset.locationId;   
         } else {
             locationId = e.target.dataset.locationId;
