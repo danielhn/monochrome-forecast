@@ -193,7 +193,11 @@ function getConfiguration() {
 }
 
 function storeConfiguration(newConfiguration) {
-    localStorage.setItem(storageKeys.configuration, JSON.stringify(newConfiguration))
+    if (JSON.stringify(getConfiguration()) !== JSON.stringify(newConfiguration)) {
+        localStorage.setItem(storageKeys.configuration, JSON.stringify(newConfiguration));
+        return true;
+    }
+    return false;
 }
 
 export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations };

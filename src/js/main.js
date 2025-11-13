@@ -126,9 +126,11 @@ configurationForm.addEventListener("submit", (event) => {
         }
     }
 
-    storeConfiguration(newConfiguration);
-    deleteCacheOfAllLocations();
-    fetchAndRenderLocation();
+    const storedConfiguration = storeConfiguration(newConfiguration);
+    if (storedConfiguration) {
+        deleteCacheOfAllLocations();
+        fetchAndRenderLocation();
+    }
 
     const configurationModal = Modal.getInstance(document.getElementById('configurationModal'));
     configurationModal.hide();
