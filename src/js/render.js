@@ -44,7 +44,6 @@ async function renderDailyForecast(dailyForecast, units) {
             days++;
             const options = {
                 weekday: "long",
-                year: "numeric",
                 month: "long",
                 day: "numeric"
             };
