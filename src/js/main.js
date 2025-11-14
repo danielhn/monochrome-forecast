@@ -21,28 +21,30 @@ window.addEventListener("load", () => {
 });
 
 const newLocationInput = document.getElementById("newLocation");
-newLocationInput.addEventListener('keyup', async (key) => {
+newLocationInput.addEventListener('keyup', async () => {
     const locationName = newLocationInput.value;
-    console.log(locationName.length);
 
     // Avoid making requests to the geocoding API with zero or one characters
     if (locationName.length >= 2) {
         const suggestions = await getSuggestionsFromLocationName(locationName);
 
-        let listOfSuggestions = '';
-        suggestions.results.forEach((suggestion) => {
-            let fullLocationName;
-            // Some suggestions don't have an admin1
-            if (suggestion.admin1) {
-                fullLocationName = `${suggestion.name} - ${suggestion.admin1}, ${suggestion.country}`;
-            } else {
-                fullLocationName = `${suggestion.name}, ${suggestion.country}`;
-            }
+        if (suggestions.results) {
+            let listOfSuggestions = '';
+            suggestions.results.forEach((suggestion) => {
+                let fullLocationName;
+                // Some suggestions don't have an admin1
+                if (suggestion.admin1) {
+                    fullLocationName = `${suggestion.name} - ${suggestion.admin1}, ${suggestion.country}`;
+                } else {
+                    fullLocationName = `${suggestion.name}, ${suggestion.country}`;
+                }
 
-            listOfSuggestions += `<button type='button' data-bs-dismiss="modal" data-latitude='${suggestion.latitude}' data-longitude='${suggestion.longitude}'  class='list-group-item list-group-item-action'>${fullLocationName}</button>`;
-        });
-
-        document.getElementById("search-suggestions").innerHTML = listOfSuggestions;
+                listOfSuggestions += `<button type='button' data-bs-dismiss="modal" data-latitude='${suggestion.latitude}' data-longitude='${suggestion.longitude}'  class='list-group-item list-group-item-action'>${fullLocationName}</button>`;
+            });
+            document.getElementById("search-suggestions").innerHTML = listOfSuggestions;
+        } else {
+            document.getElementById("search-suggestions").innerHTML = `<p class="list-group-item">No location found with that name</p>`;
+        }
     } else {
         document.getElementById("search-suggestions").innerHTML = '';
     }
