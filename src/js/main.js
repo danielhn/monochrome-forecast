@@ -56,8 +56,6 @@ newLocationModal.addEventListener('hide.bs.modal', () => {
 
 const locationsContainer = document.getElementById("locations-container");
 locationsContainer.addEventListener('click', (e) => {
-    console.log(e.target.parentElement.dataset.locationId);
-    
     if (e.target.classList.contains('btn-secondary')) {
         const locationId = e.target.dataset.locationId;
         setLocationAsActive(locationId)
@@ -76,7 +74,8 @@ locationsContainer.addEventListener('click', (e) => {
         const locations = getAllLocationsFromLocalStorage();
 
         renderLocationsInSidebar(locations)
-        fetchAndRenderLocation()
+        const activeLocation = getActiveLocation()
+        fetchAndRenderLocation(activeLocation)
     }
 });
 
