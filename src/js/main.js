@@ -1,6 +1,6 @@
 import { addLocationToLocalStorage, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations } from "./storage.js";
-import { renderLocationsInSidebar, renderConfigurationStoredToModal } from "./render.js";
-import { fetchAndRenderLocation, getSuggestionsFromLocationName } from "./fetcher.js";
+import { renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions } from "./render.js";
+import { fetchAndRenderLocation } from "./fetcher.js";
 import { defaultConfiguration } from "./constants.js";
 
 import 'bootstrap/js/dist/button';
@@ -21,35 +21,7 @@ window.addEventListener("load", () => {
 });
 
 const newLocationInput = document.getElementById("newLocation");
-newLocationInput.addEventListener('keyup', async () => {
-    const locationName = newLocationInput.value;
-
-    // Avoid making requests to the geocoding API with zero or one characters
-    if (locationName.length >= 2) {
-        const suggestions = await getSuggestionsFromLocationName(locationName);
-
-        if (suggestions.results) {
-            let listOfSuggestions = '';
-            suggestions.results.forEach((suggestion) => {
-                let fullLocationName;
-                // Some suggestions don't have an admin1
-                if (suggestion.admin1) {
-                    fullLocationName = `${suggestion.name} - ${suggestion.admin1}, ${suggestion.country}`;
-                } else {
-                    fullLocationName = `${suggestion.name}, ${suggestion.country}`;
-                }
-
-                listOfSuggestions += `<button type='button' data-bs-dismiss="modal" data-latitude='${suggestion.latitude}' data-longitude='${suggestion.longitude}'  class='list-group-item list-group-item-action'>${fullLocationName}</button>`;
-            });
-            document.getElementById("search-suggestions").innerHTML = listOfSuggestions;
-        } else {
-            document.getElementById("search-suggestions").innerHTML = `<p class="list-group-item">No location found with that name</p>`;
-        }
-    } else {
-        document.getElementById("search-suggestions").innerHTML = '';
-    }
-
-});
+newLocationInput.addEventListener('keyup', renderLocationSuggestions);
 
 const searchSuggestionsContainer = document.getElementById("search-suggestions");
 searchSuggestionsContainer.addEventListener('click', (e) => {

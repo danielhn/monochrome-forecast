@@ -1,4 +1,44 @@
 import weatherCodes from "./weatherCodes.js";
+import { getSuggestionsFromLocationName } from "./fetcher.js";
+
+const debounce = (callback, wait) => {
+    let timeoutId = null;
+    return (...args) => {
+        window.clearTimeout(timeoutId);
+        timeoutId = window.setTimeout(() => {
+            callback(...args);
+        }, wait);
+    };
+};
+
+const renderLocationSuggestions = debounce(async () => {
+    const locationName = document.getElementById("newLocation").value;
+
+    // Avoid making requests to the geocoding API with zero or one characters
+    if (locationName.length >= 2) {
+        const suggestions = await getSuggestionsFromLocationName(locationName);
+
+        if (suggestions.results) {
+            let listOfSuggestions = '';
+            suggestions.results.forEach((suggestion) => {
+                let fullLocationName;
+                // Some suggestions don't have an admin1
+                if (suggestion.admin1) {
+                    fullLocationName = `${suggestion.name} - ${suggestion.admin1}, ${suggestion.country}`;
+                } else {
+                    fullLocationName = `${suggestion.name}, ${suggestion.country}`;
+                }
+
+                listOfSuggestions += `<button type='button' data-bs-dismiss="modal" data-latitude='${suggestion.latitude}' data-longitude='${suggestion.longitude}'  class='list-group-item list-group-item-action'>${fullLocationName}</button>`;
+            });
+            document.getElementById("search-suggestions").innerHTML = listOfSuggestions;
+        } else {
+            document.getElementById("search-suggestions").innerHTML = `<p class="list-group-item">No location found with that name</p>`;
+        }
+    } else {
+        document.getElementById("search-suggestions").innerHTML = '';
+    }
+}, 200);
 
 function renderLocationData(location) {
     document.getElementById("location-name").innerText = location.name;
@@ -123,4 +163,4 @@ function renderConfigurationStoredToModal(configuration) {
     }
 }
 
-export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal }
+export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions }
