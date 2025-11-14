@@ -1,5 +1,6 @@
 import weatherCodes from "./weatherCodes.js";
 import { getSuggestionsFromLocationName } from "./fetcher.js";
+import { debounceWaitTime } from "./constants.js";
 
 const debounce = (callback, wait) => {
     let timeoutId = null;
@@ -38,7 +39,7 @@ const renderLocationSuggestions = debounce(async () => {
     } else {
         document.getElementById("search-suggestions").innerHTML = '';
     }
-}, 200);
+}, debounceWaitTime);
 
 function renderLocationData(location) {
     document.getElementById("location-name").innerText = location.name;

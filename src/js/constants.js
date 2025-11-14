@@ -6,3 +6,5 @@ export const storageKeys = {
 }
 
 export const defaultConfiguration = { "forecast_days": "7", "temperature_unit": "celsius", "wind_speed_unit": "kmh", "precipitation_unit": "mm" };
+
+export const debounceWaitTime = 200;
