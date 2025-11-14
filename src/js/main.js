@@ -1,4 +1,4 @@
-import { addLocationToLocalStorage, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations } from "./storage.js";
+import { addLocationToLocalStorage, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations, locationExists } from "./storage.js";
 import { renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions } from "./render.js";
 import { fetchAndRenderLocation } from "./fetcher.js";
 import { defaultConfiguration } from "./constants.js";
@@ -26,17 +26,24 @@ newLocationInput.addEventListener('keyup', renderLocationSuggestions);
 const searchSuggestionsContainer = document.getElementById("search-suggestions");
 searchSuggestionsContainer.addEventListener('click', (e) => {
     if (e.target.classList.contains('list-group-item')) {
-        const latitude = e.target.dataset.latitude;
-        const longitude = e.target.dataset.longitude
-        const name = e.target.innerText;
-        const locationId = addLocationToLocalStorage(latitude, longitude, name)
-        const locations = getAllLocationsFromLocalStorage();
+        // This id is given by the geolocation API and is used to prevent duplicated locations.
+        const id = e.target.dataset.id;
+        if (!locationExists(id)) {
+            const latitude = e.target.dataset.latitude;
+            const longitude = e.target.dataset.longitude;
+            const name = e.target.innerText;
+            const locationId = addLocationToLocalStorage(latitude, longitude, name, id);
+            const locations = getAllLocationsFromLocalStorage();
 
-        newLocationInput.value = '';
-        searchSuggestionsContainer.innerHTML = '';
+            newLocationInput.value = '';
+            searchSuggestionsContainer.innerHTML = '';
 
-        renderLocationsInSidebar(locations)
-        fetchAndRenderLocation(locationId)
+            renderLocationsInSidebar(locations);
+            fetchAndRenderLocation(locationId)    
+        } else {
+            console.log("Location " + id + " exists");
+            
+        }
     }
 });
 

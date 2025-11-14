@@ -39,12 +39,23 @@ function getLocationFromLocalStorage(locationId) {
 
 function getAllLocationsFromLocalStorage() {
     const locations = localStorage.getItem(storageKeys.locations);
-    if (localStorage.getItem(storageKeys.locations)) {
+    if (locations) {
         return JSON.parse(locations);
     }
 }
 
-function addLocationToLocalStorage(latitude, longitude, name) {
+function locationExists(id) {
+    const locations = getAllLocationsFromLocalStorage()
+    for (let index = 0; index < locations.length; index++) {
+        const location = getLocationFromLocalStorage(locations[index])
+        if (location.id == id) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function addLocationToLocalStorage(latitude, longitude, name, id) {
     const locations = localStorage.getItem(storageKeys.locations)
     const locationId = crypto.randomUUID();
 
@@ -56,7 +67,7 @@ function addLocationToLocalStorage(latitude, longitude, name) {
         localStorage.setItem(storageKeys.locations, JSON.stringify([locationId]));
     }
 
-    localStorage.setItem(locationId, JSON.stringify({ 'name': name, 'latitude': latitude, 'longitude': longitude }));
+    localStorage.setItem(locationId, JSON.stringify({ 'name': name, 'latitude': latitude, 'longitude': longitude, 'id': id }));
     return locationId;
 }
 
@@ -200,4 +211,4 @@ function storeConfiguration(newConfiguration) {
     return false;
 }
 
-export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations };
+export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations, locationExists };
