@@ -30,7 +30,7 @@ const renderLocationSuggestions = debounce(async () => {
                     fullLocationName = `${suggestion.name}, ${suggestion.country}`;
                 }
 
-                listOfSuggestions += `<button type='button' data-bs-dismiss="modal" data-id="${suggestion.id}" data-latitude='${suggestion.latitude}' data-longitude='${suggestion.longitude}'  class='list-group-item list-group-item-action'>${fullLocationName}</button>`;
+                listOfSuggestions += `<button type='button' data-bs-dismiss="modal" data-id="${suggestion.id}" data-latitude='${suggestion.latitude}' data-longitude='${suggestion.longitude}' class='list-group-item list-group-item-action list-group-item-light'>${fullLocationName}</button>`;
             });
             document.getElementById("search-suggestions").innerHTML = listOfSuggestions;
         } else {
