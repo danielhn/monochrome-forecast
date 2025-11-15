@@ -53,7 +53,7 @@ function renderLocationsInSidebar(locations) {
             <li class="nav-item mb-2">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-secondary" data-location-id="${locationId}">${location.name}</button>
-                    <button type="button" class="btn btn-danger" data-location-id="${locationId}" aria-label="Delete location"><i class="bi bi-x-lg fs-5"></i></button>
+                    <button type="button" class="btn btn-dark" data-location-id="${locationId}" aria-label="Delete location"><i class="bi bi-x-lg fs-5"></i></button>
                 </div>
             </li>`;
     });
