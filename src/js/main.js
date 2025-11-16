@@ -1,5 +1,5 @@
 import { addLocationToLocalStorage, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations, locationExists } from "./storage.js";
-import { renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions } from "./render.js";
+import { renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions, toggleTheme } from "./render.js";
 import { fetchAndRenderLocation } from "./fetcher.js";
 import { defaultConfiguration } from "./constants.js";
 
@@ -8,11 +8,16 @@ import Modal from 'bootstrap/js/dist/modal';
 import Offcanvas from 'bootstrap/js/dist/offcanvas';
 
 window.addEventListener("load", () => {
+    const configuration = getConfiguration()
     const locations = getAllLocationsFromLocalStorage();
-    if (!getConfiguration()) {
+    
+    if (!configuration) {
         // Set default configuration if none is found
         storeConfiguration(defaultConfiguration)
+    } else {
+        toggleTheme(configuration.theme)
     }
+
     if (locations) {
         renderLocationsInSidebar(locations)
         const activeLocation = getActiveLocation()
@@ -105,9 +110,11 @@ configurationForm.addEventListener("submit", (event) => {
             newConfiguration[field.name] = field.value;
         }
     }
-
-    const storedConfiguration = storeConfiguration(newConfiguration);
-    if (storedConfiguration) {
+    console.log(newConfiguration);
+    
+    const refreshData = storeConfiguration(newConfiguration);
+    toggleTheme(newConfiguration.theme)
+    if (refreshData) {
         deleteCacheOfAllLocations();
         fetchAndRenderLocation();
     }

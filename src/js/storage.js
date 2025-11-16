@@ -1,4 +1,4 @@
-import { storageKeys } from "./constants.js";
+import { storageKeys, ignoredOptions } from "./constants.js";
 
 function getLocationIdFromFirstLocation() {
     const locations = localStorage.getItem(storageKeys.locations)
@@ -204,11 +204,30 @@ function getConfiguration() {
 }
 
 function storeConfiguration(newConfiguration) {
-    if (JSON.stringify(getConfiguration()) !== JSON.stringify(newConfiguration)) {
+    const storedConfiguration = getConfiguration();
+    if (storedConfiguration) {
+        let optionsChanged = 0;
+        // This allows to determine if changes in the options affect the data stored in cache, so in that case it can be refreshed.
+        let refreshData = false;
+
+        for (const option in storedConfiguration) {
+            if (storedConfiguration[option] != newConfiguration[option]) {
+                optionsChanged++;
+                if (!ignoredOptions.includes(option)) {
+                    refreshData = true;
+                }
+            }
+        }
+                
+        if (optionsChanged > 0) {
+            localStorage.setItem(storageKeys.configuration, JSON.stringify(newConfiguration));
+        }
+
+        return refreshData;
+    } else {
         localStorage.setItem(storageKeys.configuration, JSON.stringify(newConfiguration));
-        return true;
+        return false;
     }
-    return false;
 }
 
 export { getLocationFromLocalStorage, getLocationIdFromFirstLocation, addLocationToLocalStorage, getForecastFromCache, writeRequestToCache, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations, locationExists };

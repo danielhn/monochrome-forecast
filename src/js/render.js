@@ -41,6 +41,10 @@ const renderLocationSuggestions = debounce(async () => {
     }
 }, debounceWaitTime);
 
+function toggleTheme(theme) {
+    document.getElementsByTagName("html")[0].dataset.bsTheme = theme;
+}
+
 function renderLocationData(location) {
     document.getElementById("location-name").innerText = location.name;
 }
@@ -162,6 +166,13 @@ function renderConfigurationStoredToModal(configuration) {
             precipitationUnits[index].checked = true;
         }
     }
+
+    const themes = document.querySelectorAll('[name=theme]')
+    for (let index = 0; index < themes.length; index++) {
+        if (themes[index].value == configuration['theme']) {
+            themes[index].checked = true;
+        }
+    }
 }
 
-export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions }
+export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions, toggleTheme }
