@@ -1,3 +1,5 @@
+$enable-rounded: false;
+
 :root {
     --focus-ring-color: #{rgba($dark, $focus-ring-opacity)};
 
@@ -39,6 +41,7 @@ input[type=search]:focus {
 
 .form-range::-moz-range-thumb {
     background-color: var(--form-range-thumb-bg) !important;
+    border-radius: 50%;
 }
 
 .form-range:focus::-moz-range-thumb {
@@ -48,6 +51,7 @@ input[type=search]:focus {
 
 .form-range::-webkit-slider-thumb {
     background-color: var(--form-range-thumb-bg) !important;
+    border-radius: 50%;
 }
 
 .form-range:focus::-webkit-slider-thumb {
