@@ -1,0 +1,70 @@
+:root {
+    --focus-ring-color: #{rgba($dark, $focus-ring-opacity)};
+
+    --input-focus-border-color: #{tint-color($dark, 50%)};
+    --input-focus-box-shadow: #{0 0 $focus-ring-blur $focus-ring-width} var(--focus-ring-color);
+
+    --form-check-input-checked-bg-color: #{$dark};
+
+    --form-range-thumb-bg: #{$dark};
+    --form-range-thumb-active-bg: #{tint-color($dark, 30%)};
+
+    --btn-close-focus-shadow: var(--input-focus-box-shadow);
+}
+
+[data-bs-theme="dark"] {
+    --focus-ring-color: #{rgba($white, $focus-ring-opacity)};
+
+    --input-focus-border-color: #{tint-color($white, 50%)};
+    --input-focus-box-shadow: #{0 0 $focus-ring-blur $focus-ring-width} var(--focus-ring-color);
+
+    --form-range-thumb-bg: #{$white};
+    --form-range-thumb-active-bg: #{tint-color($white, 70%)};
+
+    #daily-forecast-container {
+        .border-black {
+            border-color: #{$white} !important;
+        }
+    }
+
+    .btn-dark {
+        border-color: #{$white} !important;
+    }
+}
+
+input[type=search]:focus {
+    box-shadow: var(--input-focus-box-shadow) !important;
+    border-color: var(--input-focus-border-color) !important;
+}
+
+.form-range::-moz-range-thumb {
+    background-color: var(--form-range-thumb-bg) !important;
+}
+
+.form-range:focus::-moz-range-thumb {
+    background-color: var(--form-range-thumb-active-bg) !important;
+    box-shadow: var(--input-focus-box-shadow) !important;
+}
+
+.form-range::-webkit-slider-thumb {
+    background-color: var(--form-range-thumb-bg) !important;
+}
+
+.form-range:focus::-webkit-slider-thumb {
+    background-color: var(--form-range-thumb-active-bg) !important;
+    box-shadow: var(--input-focus-box-shadow) !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--form-check-input-checked-bg-color) !important;
+    border-color: var(--input-focus-border-color) !important;
+}
+
+.form-check-input:focus {
+    box-shadow: var(--input-focus-box-shadow) !important;
+    border-color: var(--input-focus-border-color) !important;
+}
+
+.btn-close:focus {
+    box-shadow: var(--input-focus-box-shadow) !important;
+}

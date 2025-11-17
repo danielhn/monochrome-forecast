@@ -3,31 +3,12 @@
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/variables-dark";
+
+@import "variables-override";
+
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
-
-$focus-ring-color: rgba($dark, $focus-ring-opacity);
-
-$input-focus-border-color: tint-color($dark, 50%);
-$input-focus-box-shadow: 0 0 0 1px $dark,
-0 0 $focus-ring-blur $focus-ring-width $focus-ring-color;
-
-$form-check-input-focus-border: $dark;
-
-$form-check-input-checked-color: $dark;
-$form-check-input-checked-bg-color: $dark;
-$form-check-input-checked-border-color: $dark;
-
-$form-check-input-focus-box-shadow: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color;
-
-$btn-close-focus-shadow: $form-check-input-focus-box-shadow;
-
-$form-range-thumb-bg: $dark;
-$form-range-thumb-active-bg: tint-color($dark, 70%);
-
-$form-range-thumb-focus-box-shadow: 0 0 0 1px $dark, 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color;
-
 @import "bootstrap/scss/root";
 @import "bootstrap/scss/reboot";
 @import "bootstrap/scss/type";
