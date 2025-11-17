@@ -46,10 +46,12 @@ function getAllLocationsFromLocalStorage() {
 
 function locationExists(id) {
     const locations = getAllLocationsFromLocalStorage()
-    for (let index = 0; index < locations.length; index++) {
-        const location = getLocationFromLocalStorage(locations[index])
-        if (location.id == id) {
-            return true;
+    if (locations) {
+        for (let index = 0; index < locations.length; index++) {
+            const location = getLocationFromLocalStorage(locations[index])
+            if (location.id == id) {
+                return true;
+            }
         }
     }
     return false;
