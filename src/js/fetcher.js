@@ -5,11 +5,13 @@ export async function fetchAndRenderLocation(locationId) {
     if (!locationId) {
         locationId = getLocationIdFromFirstLocation();
     }
+    
     const location = getLocationFromLocalStorage(locationId);
-
+    
     if (location) {
         document.getElementById("current-hour-container").classList.remove('d-none');
         document.getElementById("status-container").classList.add('d-none');
+        document.getElementById("daily-forecast-container").classList.remove('d-none');
 
         renderLocationData(location);
         const currentHourWeather = await getWeatherForCurrentHour(location, locationId);
@@ -17,6 +19,10 @@ export async function fetchAndRenderLocation(locationId) {
         const dailyForecast = await getDailyForecast(location, locationId);
         renderDailyForecast(dailyForecast.hourly, dailyForecast.hourly_units);
     } else {
+        document.getElementById("current-hour-container").classList.add('d-none');
+        document.getElementById("status-container").classList.remove('d-none');
+        document.getElementById("daily-forecast-container").classList.add('d-none');
+
         document.getElementById("status-text").innerText = "No location found. Add a new location to display the forecast.";
     }
 }

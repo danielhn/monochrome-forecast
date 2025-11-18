@@ -81,6 +81,7 @@ locationsContainer.addEventListener('click', (e) => {
 
         renderLocationsInSidebar(locations)
         const activeLocation = getActiveLocation()
+        
         fetchAndRenderLocation(activeLocation)
     }
 });
