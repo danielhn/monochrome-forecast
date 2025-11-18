@@ -9,13 +9,15 @@ export async function fetchAndRenderLocation(locationId) {
 
     if (location) {
         document.getElementById("current-hour-container").classList.remove('d-none');
-        document.getElementById("no-location-found-title").classList.add('d-none');
+        document.getElementById("status-container").classList.add('d-none');
 
         renderLocationData(location);
         const currentHourWeather = await getWeatherForCurrentHour(location, locationId);
         renderHourlyWeather(currentHourWeather.current, currentHourWeather.current_units);
         const dailyForecast = await getDailyForecast(location, locationId);
         renderDailyForecast(dailyForecast.hourly, dailyForecast.hourly_units);
+    } else {
+        document.getElementById("status-text").innerText = "No location found. Add a new location to display the forecast.";
     }
 }
 
