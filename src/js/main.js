@@ -55,6 +55,7 @@ searchSuggestionsContainer.addEventListener('click', (e) => {
 const newLocationModal = document.getElementById("addLocation")
 newLocationModal.addEventListener('hide.bs.modal', () => {
     newLocationInput.value = '';
+    searchSuggestionsContainer.innerHTML = '';
 })
 
 // Locations offcanvas
