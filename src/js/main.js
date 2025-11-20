@@ -1,5 +1,5 @@
 import { addLocationToLocalStorage, getAllLocationsFromLocalStorage, getActiveLocation, setLocationAsActive, deleteLocationWithCache, storeConfiguration, getConfiguration, deleteCacheOfAllLocations, locationExists } from "./storage.js";
-import { renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions, toggleTheme } from "./render.js";
+import { renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions, toggleTheme, showNoLocationFound } from "./render.js";
 import { fetchAndRenderLocation } from "./fetcher.js";
 import { defaultConfiguration } from "./constants.js";
 
@@ -22,6 +22,8 @@ window.addEventListener("load", () => {
         renderLocationsInSidebar(locations)
         const activeLocation = getActiveLocation()
         fetchAndRenderLocation(activeLocation)
+    } else {
+        showNoLocationFound()
     }
 });
 

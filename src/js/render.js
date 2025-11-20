@@ -45,6 +45,14 @@ function toggleTheme(theme) {
     document.getElementsByTagName("html")[0].dataset.bsTheme = theme;
 }
 
+function showNoLocationFound() {
+    document.getElementById("current-hour-container").classList.add('d-none');
+    document.getElementById("status-container").classList.remove('d-none');
+    document.getElementById("daily-forecast-container").classList.add('d-none');
+
+    document.getElementById("status-text").innerText = "No location found. Add a new location to display the forecast.";
+}
+
 function renderLocationData(location) {
     document.getElementById("location-name").innerText = location.name;
 }
@@ -175,4 +183,4 @@ function renderConfigurationStoredToModal(configuration) {
     }
 }
 
-export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions, toggleTheme }
+export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions, toggleTheme, showNoLocationFound }

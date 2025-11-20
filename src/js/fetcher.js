@@ -1,4 +1,4 @@
-import { renderLocationData, renderHourlyWeather, renderDailyForecast } from "./render.js";
+import { renderLocationData, renderHourlyWeather, renderDailyForecast, showNoLocationFound } from "./render.js";
 import { getLocationFromLocalStorage, getForecastFromCache, writeRequestToCache, getLocationIdFromFirstLocation, getConfiguration } from "./storage.js";
 
 export async function fetchAndRenderLocation(locationId) {
@@ -19,11 +19,7 @@ export async function fetchAndRenderLocation(locationId) {
         const dailyForecast = await getDailyForecast(location, locationId);
         renderDailyForecast(dailyForecast.hourly, dailyForecast.hourly_units);
     } else {
-        document.getElementById("current-hour-container").classList.add('d-none');
-        document.getElementById("status-container").classList.remove('d-none');
-        document.getElementById("daily-forecast-container").classList.add('d-none');
-
-        document.getElementById("status-text").innerText = "No location found. Add a new location to display the forecast.";
+        showNoLocationFound()
     }
 }
 
