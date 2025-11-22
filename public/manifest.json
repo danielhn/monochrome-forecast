@@ -1,6 +1,5 @@
 {
-    "short_name": "Weather",
-    "name": "Weather forecast",
+    "name": "Monochrome forecast",
     "icons": [
         {
             "src": "/icon-192x192.png",
