@@ -1,6 +1,7 @@
 import weatherCodes from "./weatherCodes.js";
 import { getSuggestionsFromLocationName } from "./fetcher.js";
 import { debounceWaitTime } from "./constants.js";
+import Toast from "bootstrap/js/dist/toast";
 
 const debounce = (callback, wait) => {
     let timeoutId = null;
@@ -183,4 +184,11 @@ function renderConfigurationStoredToModal(configuration) {
     }
 }
 
-export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions, toggleTheme, showNoLocationFound }
+function renderToast(message) {
+    const toast = document.getElementById('toast');
+    document.getElementById("toastMessage").innerText = message
+    const toastBootstrap = Toast.getOrCreateInstance(toast);
+    toastBootstrap.show();
+}
+
+export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions, toggleTheme, showNoLocationFound, renderToast }
