@@ -61,8 +61,8 @@ function renderLocationData(location) {
 function renderLocationsInSidebar(locations) {
     document.getElementById("locations-container").innerHTML = '';
     locations.forEach(locationId => {
-            const location = JSON.parse(localStorage.getItem(locationId))
-            document.getElementById("locations-container").innerHTML += `
+        const location = JSON.parse(localStorage.getItem(locationId));
+        document.getElementById("locations-container").innerHTML += `
             <li class="nav-item mb-2">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-secondary" data-location-id="${locationId}">${location.name}</button>
@@ -73,11 +73,11 @@ function renderLocationsInSidebar(locations) {
 }
 
 function renderHourlyWeather(weather, units) {
-    const currentHour = new Date(weather.time).toLocaleTimeString(undefined, { timeStyle: "short"});
+    const currentHour = new Date(weather.time).toLocaleTimeString(undefined, { timeStyle: "short" });
     document.getElementById('current-hour-last-updated').innerHTML = `Last updated: ${currentHour}`;
-    let icon = weatherCodes[weather.weather_code].icon
+    let icon = weatherCodes[weather.weather_code].icon;
     if (!weather.is_day && weatherCodes[weather.weather_code].icon_night) {
-        icon = weatherCodes[weather.weather_code].icon_night
+        icon = weatherCodes[weather.weather_code].icon_night;
     }
     document.getElementById('current-hour-weather-code').innerHTML = `<i class='${icon}'></i> ` + weatherCodes[weather.weather_code].description;
     document.getElementById('current-hour-temperature').innerText = `${weather.temperature_2m} ${units.temperature_2m} - Feels like ${weather.apparent_temperature} ${units.apparent_temperature}`;
@@ -147,36 +147,36 @@ function renderWeatherCard(dailyForecast, hour, days, units) {
 }
 
 function renderConfigurationStoredToModal(configuration) {
-    document.getElementById("configurationForecastDays").value = configuration['forecast_days']
-    document.getElementById("configurationForecastDays").defaultValue = configuration['forecast_days']
-    
-    document.getElementById("forecastDaysOutput").value = configuration['forecast_days']
-    document.getElementById("forecastDaysOutput").defaultValue = configuration['forecast_days']
+    document.getElementById("configurationForecastDays").value = configuration['forecast_days'];
+    document.getElementById("configurationForecastDays").defaultValue = configuration['forecast_days'];
 
-    const temperatureUnits = document.querySelectorAll('[name=temperature_unit]')
-    
+    document.getElementById("forecastDaysOutput").value = configuration['forecast_days'];
+    document.getElementById("forecastDaysOutput").defaultValue = configuration['forecast_days'];
+
+    const temperatureUnits = document.querySelectorAll('[name=temperature_unit]');
+
     for (let index = 0; index < temperatureUnits.length; index++) {
         if (temperatureUnits[index].value == configuration['temperature_unit']) {
             //console.log(temperatureUnits[index]);
             temperatureUnits[index].checked = true;
-        }     
+        }
     }
 
-    const windSpeedUnits = document.querySelectorAll('[name=wind_speed_unit]')
+    const windSpeedUnits = document.querySelectorAll('[name=wind_speed_unit]');
     for (let index = 0; index < windSpeedUnits.length; index++) {
         if (windSpeedUnits[index].value == configuration['wind_speed_unit']) {
             windSpeedUnits[index].checked = true;
         }
     }
 
-    const precipitationUnits = document.querySelectorAll('[name=precipitation_unit]')
+    const precipitationUnits = document.querySelectorAll('[name=precipitation_unit]');
     for (let index = 0; index < precipitationUnits.length; index++) {
         if (precipitationUnits[index].value == configuration['precipitation_unit']) {
             precipitationUnits[index].checked = true;
         }
     }
 
-    const themes = document.querySelectorAll('[name=theme]')
+    const themes = document.querySelectorAll('[name=theme]');
     for (let index = 0; index < themes.length; index++) {
         if (themes[index].value == configuration['theme']) {
             themes[index].checked = true;
@@ -186,9 +186,9 @@ function renderConfigurationStoredToModal(configuration) {
 
 function renderToast(message) {
     const toast = document.getElementById('toast');
-    document.getElementById("toastMessage").innerText = message
+    document.getElementById("toastMessage").innerText = message;
     const toastBootstrap = Toast.getOrCreateInstance(toast);
     toastBootstrap.show();
 }
 
-export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions, toggleTheme, showNoLocationFound, renderToast }
+export { renderLocationData, renderHourlyWeather, renderDailyForecast, renderLocationsInSidebar, renderConfigurationStoredToModal, renderLocationSuggestions, toggleTheme, showNoLocationFound, renderToast };

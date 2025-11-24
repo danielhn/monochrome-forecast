@@ -8,22 +8,22 @@ import Modal from 'bootstrap/js/dist/modal';
 import Offcanvas from 'bootstrap/js/dist/offcanvas';
 
 window.addEventListener("load", () => {
-    const configuration = getConfiguration()
+    const configuration = getConfiguration();
     const locations = getAllLocationsFromLocalStorage();
-    
+
     if (!configuration) {
         // Set default configuration if none is found
-        storeConfiguration(defaultConfiguration)
+        storeConfiguration(defaultConfiguration);
     } else {
-        toggleTheme(configuration.theme)
+        toggleTheme(configuration.theme);
     }
 
     if (locations) {
-        renderLocationsInSidebar(locations)
-        const activeLocation = getActiveLocation()
-        fetchAndRenderLocation(activeLocation)
+        renderLocationsInSidebar(locations);
+        const activeLocation = getActiveLocation();
+        fetchAndRenderLocation(activeLocation);
     } else {
-        showNoLocationFound()
+        showNoLocationFound();
     }
 });
 
@@ -46,19 +46,19 @@ searchSuggestionsContainer.addEventListener('click', (e) => {
             searchSuggestionsContainer.innerHTML = '';
 
             renderLocationsInSidebar(locations);
-            fetchAndRenderLocation(locationId)    
+            fetchAndRenderLocation(locationId);
         } else {
             console.log("Location " + id + " exists");
-            
+
         }
     }
 });
 
-const newLocationModal = document.getElementById("addLocation")
+const newLocationModal = document.getElementById("addLocation");
 newLocationModal.addEventListener('hide.bs.modal', () => {
     newLocationInput.value = '';
     searchSuggestionsContainer.innerHTML = '';
-})
+});
 
 // Locations offcanvas
 
@@ -66,25 +66,25 @@ const locationsContainer = document.getElementById("locations-container");
 locationsContainer.addEventListener('click', (e) => {
     if (e.target.classList.contains('btn-secondary')) {
         const locationId = e.target.dataset.locationId;
-        setLocationAsActive(locationId)
-        fetchAndRenderLocation(locationId)
-        const locationsOffcanvas = Offcanvas.getInstance(document.getElementById("offcanvasNavbarLocations"))
-        locationsOffcanvas.hide()
+        setLocationAsActive(locationId);
+        fetchAndRenderLocation(locationId);
+        const locationsOffcanvas = Offcanvas.getInstance(document.getElementById("offcanvasNavbarLocations"));
+        locationsOffcanvas.hide();
     } else if (e.target.classList.contains('btn-dark') || e.target.classList.contains('bi-x-lg')) {
         let locationId;
         if (e.target.classList.contains('bi-x-lg')) {
-            locationId = e.target.parentElement.dataset.locationId;   
+            locationId = e.target.parentElement.dataset.locationId;
         } else {
             locationId = e.target.dataset.locationId;
         }
 
-        deleteLocationWithCache(locationId)
+        deleteLocationWithCache(locationId);
         const locations = getAllLocationsFromLocalStorage();
 
-        renderLocationsInSidebar(locations)
-        const activeLocation = getActiveLocation()
-        
-        fetchAndRenderLocation(activeLocation)
+        renderLocationsInSidebar(locations);
+        const activeLocation = getActiveLocation();
+
+        fetchAndRenderLocation(activeLocation);
     }
 });
 
@@ -115,9 +115,9 @@ configurationForm.addEventListener("submit", (event) => {
         }
     }
     console.log(newConfiguration);
-    
+
     const refreshData = storeConfiguration(newConfiguration);
-    toggleTheme(newConfiguration.theme)
+    toggleTheme(newConfiguration.theme);
     if (refreshData) {
         deleteCacheOfAllLocations();
         fetchAndRenderLocation();

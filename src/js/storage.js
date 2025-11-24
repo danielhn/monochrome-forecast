@@ -1,7 +1,7 @@
 import { storageKeys, ignoredOptions } from "./constants.js";
 
 function getLocationIdFromFirstLocation() {
-    const locations = localStorage.getItem(storageKeys.locations)
+    const locations = localStorage.getItem(storageKeys.locations);
     if (locations) {
         return JSON.parse(localStorage.getItem(storageKeys.locations))[0];
     } else {
@@ -10,11 +10,11 @@ function getLocationIdFromFirstLocation() {
 }
 
 function getActiveLocation() {
-    return sessionStorage.getItem(storageKeys.activeLocation)
+    return sessionStorage.getItem(storageKeys.activeLocation);
 }
 
 function setLocationAsActive(locationId) {
-    sessionStorage.setItem(storageKeys.activeLocation, locationId)
+    sessionStorage.setItem(storageKeys.activeLocation, locationId);
 }
 
 function deleteActiveLocation(locationId) {
@@ -22,14 +22,14 @@ function deleteActiveLocation(locationId) {
         // If locationId is passed, check if the location is active. If it is, delete it.
         if (sessionStorage.getItem(storageKeys.activeLocation) == locationId) {
             sessionStorage.removeItem(storageKeys.activeLocation);
-        }    
+        }
     } else {
         sessionStorage.removeItem(storageKeys.activeLocation);
     }
 }
 
 function getLocationFromLocalStorage(locationId) {
-    const locations = localStorage.getItem(storageKeys.locations)
+    const locations = localStorage.getItem(storageKeys.locations);
     if (locations) {
         return JSON.parse(localStorage.getItem(locationId));
     } else {
@@ -45,10 +45,10 @@ function getAllLocationsFromLocalStorage() {
 }
 
 function locationExists(id) {
-    const locations = getAllLocationsFromLocalStorage()
+    const locations = getAllLocationsFromLocalStorage();
     if (locations) {
         for (let index = 0; index < locations.length; index++) {
-            const location = getLocationFromLocalStorage(locations[index])
+            const location = getLocationFromLocalStorage(locations[index]);
             if (location.id == id) {
                 return true;
             }
@@ -58,12 +58,12 @@ function locationExists(id) {
 }
 
 function addLocationToLocalStorage(latitude, longitude, name, id) {
-    const locations = localStorage.getItem(storageKeys.locations)
+    const locations = localStorage.getItem(storageKeys.locations);
     const locationId = crypto.randomUUID();
 
     if (locations) {
-        const locationsArray = JSON.parse(locations)
-        locationsArray.push(locationId)
+        const locationsArray = JSON.parse(locations);
+        locationsArray.push(locationId);
         localStorage.setItem(storageKeys.locations, JSON.stringify(locationsArray));
     } else {
         localStorage.setItem(storageKeys.locations, JSON.stringify([locationId]));
@@ -93,7 +93,7 @@ function getForecastFromCache(locationID, cacheType) {
                         } else {
                             cacheDataJSON[index][cacheLocationId].splice(i, 1);
                             localStorage.setItem(storageKeys.cacheData, JSON.stringify(cacheDataJSON));
-                            localStorage.removeItem(element.id)
+                            localStorage.removeItem(element.id);
                             return false;
                         }
                     }
@@ -125,11 +125,11 @@ function writeRequestToCache(request, locationId, cacheType, timeToExpire = 9000
                 locationFound = true;
                 cacheDataJSON[index][cacheLocationId].push(newCache);
                 break;
-            }            
+            }
         }
 
         if (!locationFound) {
-            cacheDataJSON.push({[locationId]: [newCache]})
+            cacheDataJSON.push({ [locationId]: [newCache] });
         }
 
         localStorage.setItem(storageKeys.cacheData, JSON.stringify(cacheDataJSON));
@@ -195,14 +195,14 @@ function deleteLocationIdFromLocationsList(locationId) {
 }
 
 function deleteLocationWithCache(locationId) {
-    deleteCacheOfLocation(locationId)
-    deleteLocationData(locationId)
-    deleteLocationIdFromLocationsList(locationId)
-    deleteActiveLocation(locationId)
+    deleteCacheOfLocation(locationId);
+    deleteLocationData(locationId);
+    deleteLocationIdFromLocationsList(locationId);
+    deleteActiveLocation(locationId);
 }
 
 function getConfiguration() {
-    return JSON.parse(localStorage.getItem(storageKeys.configuration))
+    return JSON.parse(localStorage.getItem(storageKeys.configuration));
 }
 
 function storeConfiguration(newConfiguration) {
@@ -220,7 +220,7 @@ function storeConfiguration(newConfiguration) {
                 }
             }
         }
-                
+
         if (optionsChanged > 0) {
             localStorage.setItem(storageKeys.configuration, JSON.stringify(newConfiguration));
         }

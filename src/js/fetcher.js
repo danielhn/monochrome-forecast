@@ -5,9 +5,9 @@ export async function fetchAndRenderLocation(locationId) {
     if (!locationId) {
         locationId = getLocationIdFromFirstLocation();
     }
-    
+
     const location = getLocationFromLocalStorage(locationId);
-    
+
     if (location) {
         document.getElementById("current-hour-container").classList.remove('d-none');
         document.getElementById("status-container").classList.add('d-none');
@@ -19,7 +19,7 @@ export async function fetchAndRenderLocation(locationId) {
         const dailyForecast = await getDailyForecast(location, locationId);
         renderDailyForecast(dailyForecast.hourly, dailyForecast.hourly_units);
     } else {
-        showNoLocationFound()
+        showNoLocationFound();
     }
 }
 
@@ -78,7 +78,7 @@ async function getDailyForecastFromAPI(latitude, longitude, forecastDays = 7, wi
         const request = await fetch(url);
         return await request.json();
     } catch (error) {
-        renderToast("Could not retrieve daily forecast. Check your connection and try again later.")
+        renderToast("Could not retrieve daily forecast. Check your connection and try again later.");
     }
 }
 
@@ -88,6 +88,6 @@ export async function getSuggestionsFromLocationName(locationName) {
         const request = await fetch(url);
         return await request.json();
     } catch (error) {
-        renderToast("Could not retrieve location suggestions. Check your connection and try again later.")
+        renderToast("Could not retrieve location suggestions. Check your connection and try again later.");
     }
 }
