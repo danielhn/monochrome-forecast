@@ -73,8 +73,6 @@ function renderLocationsInSidebar(locations) {
 }
 
 function renderHourlyWeather(weather, units) {
-    const currentHour = new Date(weather.time).toLocaleTimeString(undefined, { timeStyle: "short" });
-    document.getElementById('current-hour-last-updated').innerHTML = `Last updated: ${currentHour}`;
     let icon = weatherCodes[weather.weather_code].icon;
     if (!weather.is_day && weatherCodes[weather.weather_code].icon_night) {
         icon = weatherCodes[weather.weather_code].icon_night;
