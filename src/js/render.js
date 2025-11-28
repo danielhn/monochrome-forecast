@@ -51,7 +51,8 @@ function showNoLocationFound() {
     document.getElementById("status-container").classList.remove('d-none');
     document.getElementById("daily-forecast-container").classList.add('d-none');
 
-    document.getElementById("status-text").innerText = "No location found. Add a new location to display the forecast.";
+    document.getElementById("status-text").innerHTML = `<p class="mb-5">Add a new location by clicking on the <i class="bi bi-geo-alt"><span class="visually-hidden">new location</span></i> icon in the navbar to display the forecast.</p>
+    <p>Added locations are displayed by clicking on the <i class="bi bi-globe"><span class="visually-hidden">list of locations</span></i> icon.</p>`;
 }
 
 function renderLocationData(location) {
