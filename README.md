@@ -2,6 +2,10 @@
 
 Monochrome Forecast shows the weather forecast for a given location. It can be installed as a [PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/What_is_a_progressive_web_app). It uses [Open-meteo](https://open-meteo.com/) for location suggestions and for the weather data.
 
+## Demo
+
+<https://monochromeforecast.netlify.app/>
+
 ## Instalation
 
 Node.js is required to install and run Monochrome Forecast.
