@@ -18,7 +18,7 @@
             "type": "image/png"
         },
         {
-            "src": "/icon.svg",
+            "src": "/img/icons/icon.svg",
             "sizes": "any",
             "type": "image/svg+xml"
         }
