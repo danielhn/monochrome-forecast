@@ -2,7 +2,7 @@
 for = "/*"
 
 [headers.values]
-Content-Security-Policy = "default-src 'none'; script-src 'self'; style-src 'self'; img-src data: 'self'; connect-src https://*.open-meteo.com; font-src 'self'; object-src 'none'; media-src 'none'; frame-src 'none'; frame-ancestors 'none'; worker-src 'self'; manifest-src 'self'; form-action 'none'; base-uri 'self';"
+Content-Security-Policy = "default-src 'none'; script-src 'self'; style-src 'self'; img-src data: 'self'; connect-src 'self' https://*.open-meteo.com; font-src 'self'; object-src 'none'; media-src 'none'; frame-src 'none'; frame-ancestors 'none'; worker-src 'self'; manifest-src 'self'; form-action 'none'; base-uri 'self';"
 
 Cross-Origin-Resource-Policy = "same-origin"
 Referrer-Policy = "strict-origin-when-cross-origin"
