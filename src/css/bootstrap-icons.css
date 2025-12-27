@@ -1,0 +1,116 @@
+@font-face {
+  font-family: 'bootstrap-icons';
+  src: url('../fonts/bootstrap-icons.woff2') format('woff2');
+  font-display: block;
+}
+
+.bi::before,
+[class^="bi-"]::before,
+[class*=" bi-"]::before {
+  display: inline-block;
+  font-family: bootstrap-icons !important;
+  font-style: normal;
+  font-weight: normal !important;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  vertical-align: -.125em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bi-cloud-drizzle:before {
+  content: "\e900";
+}
+
+.bi-cloud-fog:before {
+  content: "\e901";
+}
+
+.bi-cloud-fog2:before {
+  content: "\e902";
+}
+
+.bi-cloud-hail:before {
+  content: "\e903";
+}
+
+.bi-cloud-lightning-rain:before {
+  content: "\e904";
+}
+
+.bi-cloud-moon:before {
+  content: "\e905";
+}
+
+.bi-cloud-rain-heavy:before {
+  content: "\e906";
+}
+
+.bi-cloud-rain:before {
+  content: "\e907";
+}
+
+.bi-cloud-snow:before {
+  content: "\e908";
+}
+
+.bi-cloud-sun:before {
+  content: "\e909";
+}
+
+.bi-cloud:before {
+  content: "\e90a";
+}
+
+.bi-clouds:before {
+  content: "\e90b";
+}
+
+.bi-droplet:before {
+  content: "\e90c";
+}
+
+.bi-geo-alt:before {
+  content: "\e90d";
+}
+
+.bi-globe:before {
+  content: "\e90e";
+}
+
+.bi-moisture:before {
+  content: "\e90f";
+}
+
+.bi-moon:before {
+  content: "\e910";
+}
+
+.bi-sliders:before {
+  content: "\e911";
+}
+
+.bi-snow:before {
+  content: "\e912";
+}
+
+.bi-sun:before {
+  content: "\e913";
+}
+
+.bi-thermometer:before {
+  content: "\e914";
+}
+
+.bi-umbrella:before {
+  content: "\e915";
+}
+
+.bi-wind:before {
+  content: "\e916";
+}
+
+.bi-x-lg:before {
+  content: "\e917";
+}
