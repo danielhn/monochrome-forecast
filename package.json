@@ -10,13 +10,12 @@
         "preview": "vite preview"
     },
     "dependencies": {
-        "bootstrap": "^5.3.8",
-        "bootstrap-icons": "^1.13.1"
+        "bootstrap": "^5.3.8"
     },
     "devDependencies": {
-        "sass": "^1.93.3",
-        "vite": "^7.1.12",
+        "@fullhuman/postcss-purgecss": "^7.0.2",
         "postcss": "^8.5.6",
-        "@fullhuman/postcss-purgecss": "^7.0.2"
+        "sass": "^1.93.3",
+        "vite": "^7.1.12"
     }
 }
