@@ -156,7 +156,6 @@ function renderConfigurationStoredToModal(configuration) {
 
     for (let index = 0; index < temperatureUnits.length; index++) {
         if (temperatureUnits[index].value == configuration['temperature_unit']) {
-            //console.log(temperatureUnits[index]);
             temperatureUnits[index].checked = true;
         }
     }

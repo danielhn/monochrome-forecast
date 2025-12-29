@@ -47,9 +47,6 @@ searchSuggestionsContainer.addEventListener('click', (e) => {
 
             renderLocationsInSidebar(locations);
             fetchAndRenderLocation(locationId);
-        } else {
-            console.log("Location " + id + " exists");
-
         }
     }
 });
@@ -114,7 +111,6 @@ configurationForm.addEventListener("submit", (event) => {
             newConfiguration[field.name] = field.value;
         }
     }
-    console.log(newConfiguration);
 
     const refreshData = storeConfiguration(newConfiguration);
     toggleTheme(newConfiguration.theme);
