@@ -19,6 +19,7 @@ export default defineConfig({
                     'global-builtin',
                     'legacy-js-api',
                 ],
+                quietDeps: true
             },
         },
     },
